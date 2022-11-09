@@ -1,8 +1,8 @@
 package org.example.application.socialmedia;
 
-import org.example.application.card.CardController;
-import org.example.application.card.PackagesMemoryRepository;
-import org.example.application.card.PackagesRepository;
+import org.example.application.socialmedia.controller.CardController;
+import org.example.application.socialmedia.respository.PackagesMemoryRepository;
+import org.example.application.socialmedia.respository.PackagesRepository;
 import org.example.application.socialmedia.controller.UserController;
 import org.example.application.socialmedia.respository.UserMemoryRepository;
 import org.example.application.socialmedia.respository.UserRepository;

@@ -1,4 +1,4 @@
-package org.example.application.card;
+package org.example.application.socialmedia.model;
 
 public class Card {
     private String id;

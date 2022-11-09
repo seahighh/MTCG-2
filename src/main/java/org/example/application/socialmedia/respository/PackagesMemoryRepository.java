@@ -1,4 +1,6 @@
-package org.example.application.card;
+package org.example.application.socialmedia.respository;
+
+import org.example.application.socialmedia.model.Card;
 
 import java.util.ArrayList;
 import java.util.List;

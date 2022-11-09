@@ -1,7 +1,9 @@
-package org.example.application.card;
+package org.example.application.socialmedia.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.application.socialmedia.model.Card;
+import org.example.application.socialmedia.respository.PackagesRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
 import org.example.server.http.ContentType;
