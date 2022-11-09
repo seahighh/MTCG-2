@@ -1,5 +1,8 @@
 package org.example.application.socialmedia;
 
+import org.example.application.card.CardController;
+import org.example.application.card.PackagesMemoryRepository;
+import org.example.application.card.PackagesRepository;
 import org.example.application.socialmedia.controller.UserController;
 import org.example.application.socialmedia.respository.UserMemoryRepository;
 import org.example.application.socialmedia.respository.UserRepository;
@@ -12,16 +15,22 @@ import org.example.server.http.StatusCode;
 public class SocialMediaApp implements Application {
 
     private UserController userController;
+    private CardController cardController;
 
     public SocialMediaApp() {
         UserRepository userRepository = new UserMemoryRepository();
         this.userController = new UserController(userRepository);
+        PackagesRepository packagesRepository = new PackagesMemoryRepository();
+        this.cardController = new CardController(packagesRepository);
     }
 
     @Override
     public Response handle(Request request) {
         if (request.getPath().startsWith("/users")) {
             return userController.handle(request);
+        }
+        if (request.getPath().startsWith("/packages")){
+            return cardController.handle(request);
         }
 
         Response response = new Response();
