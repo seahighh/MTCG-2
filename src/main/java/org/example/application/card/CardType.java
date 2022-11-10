@@ -1,8 +1,11 @@
 package org.example.application.card;
 
+import com.google.gson.annotations.SerializedName;
 
+public enum CardType {
+    @SerializedName("MONSTER")
+    MONSTER,
 
-public class CardType {
-    private String Monster;
-    private String Spell;
+    @SerializedName("SPELL")
+    SPELL
 }

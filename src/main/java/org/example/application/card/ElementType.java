@@ -1,8 +1,14 @@
 package org.example.application.card;
 
-public class ElementType {
+import com.google.gson.annotations.SerializedName;
 
-    String water;
-    String fire;
-    String wind;
+public enum ElementType {
+    @SerializedName("FIRE")
+    FIRE,
+
+    @SerializedName("WATER")
+    WATER,
+
+    @SerializedName("NORMAL")
+    NORMAL
 }

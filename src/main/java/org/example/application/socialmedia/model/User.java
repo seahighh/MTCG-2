@@ -2,6 +2,8 @@ package org.example.application.socialmedia.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.nio.charset.StandardCharsets;
+
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class User {
 
