@@ -1,5 +1,7 @@
 package org.example.application.socialmedia.model;
 
+import org.example.application.card.ElementType;
+
 public class Card{
     private String id;
     private String name;
@@ -10,10 +12,11 @@ public class Card{
 
     }
 
-    public Card(String id, String name, float damage){
+    public Card(String id, String name, float damage, ElementType elementType){
         this.id = id;
         this.name = name;
         this.damage = damage;
+        this.elementType = String.valueOf(elementType);
     }
 
     public String getId() {
