@@ -14,10 +14,10 @@ public class CardHandle {
         return CardHandle.instance;
     }
 
-
-    public Card getCard(int id){
-
-
+    public Card getCard(String id){
         return null;
     }
+
+
+
 }
