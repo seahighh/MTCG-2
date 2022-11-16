@@ -7,4 +7,10 @@ public class CardHandle {
 
     }
 
+    public static CardHandle getInstance(){
+        if (CardHandle.instance == null){
+            CardHandle.instance = new CardHandle();
+        }
+        return CardHandle.instance;
+    }
 }
