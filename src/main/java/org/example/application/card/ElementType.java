@@ -7,5 +7,5 @@ public enum ElementType {
 
     WATER,
 
-    NORMAL
+
 }
