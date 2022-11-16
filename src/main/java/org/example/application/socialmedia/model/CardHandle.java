@@ -13,4 +13,11 @@ public class CardHandle {
         }
         return CardHandle.instance;
     }
+
+
+    public Card getCard(int id){
+
+
+        return null;
+    }
 }
