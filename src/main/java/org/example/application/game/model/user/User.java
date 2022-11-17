@@ -47,7 +47,6 @@ public class User {
                 //bcrypt
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
-
         return passwordHash.equals(getPassword());
     }
 

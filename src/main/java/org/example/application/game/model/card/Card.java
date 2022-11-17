@@ -4,17 +4,15 @@ public class Card{
     private String id;
     private String name;
     private float damage;
-    private String elementType;
+    ElementType elementType;
 
-    public Card(){
-
-    }
+    CardType cardType;
 
     public Card(String id, String name, float damage, ElementType elementType){
         this.id = id;
         this.name = name;
         this.damage = damage;
-        this.elementType = String.valueOf(elementType);
+        this.elementType = elementType;
     }
 
     public String getId() {
@@ -36,9 +34,32 @@ public class Card{
         this.name = name;
     }
 
+    public static Card info(String id, String name, float damage, String card_type, String element_type){
+        ElementType elementType;
+        CardType cardType;
+        Card card;
 
-    public double getDamage() {
-        return damage;
+        cardType = CardType.valueOf(card_type);
+        elementType = ElementType.valueOf(element_type);
+
+        if (CardType.MONSTER.equals(cardType)){
+            card = MonsterCard.builder()
+                    .id(id)
+                    .name(name)
+                    .damage(damage)
+                    .elementType(elementType)
+                    .build();
+        }
+        else {
+            card = SpellCard.builder()
+                    .id(id)
+                    .name(name)
+                    .damage(damage)
+                    .elementType(elementType)
+                    .build();
+        }
+
+        return card;
     }
 
 
@@ -46,14 +67,26 @@ public class Card{
         this.damage = damage;
     }
 
+    public float getDamage() {
+        return damage;
+    }
 
-    public String getElementType() {
+    public ElementType getElementType(){
         return elementType;
     }
 
-
-    public void setElementType(String elementType) {
-        this.elementType = elementType;
+    public CardType getCardType(){
+        return cardType;
     }
 
+
+//    public String getElementType() {
+//        return elementType;
+//    }
+//
+//
+//    public void setElementType(String elementType) {
+//        this.elementType = elementType;
+//    }
+//
 }
