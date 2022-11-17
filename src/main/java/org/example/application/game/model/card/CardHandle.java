@@ -1,4 +1,4 @@
-package org.example.application.socialmedia.model;
+package org.example.application.game.model.card;
 
 public class CardHandle {
     private static CardHandle instance;

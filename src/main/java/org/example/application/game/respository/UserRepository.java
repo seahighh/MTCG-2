@@ -1,6 +1,6 @@
-package org.example.application.socialmedia.respository;
+package org.example.application.game.respository;
 
-import org.example.application.socialmedia.model.User;
+import org.example.application.game.model.user.User;
 
 import java.util.List;
 

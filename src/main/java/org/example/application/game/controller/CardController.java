@@ -1,10 +1,9 @@
-package org.example.application.socialmedia.controller;
+package org.example.application.game.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.application.card.CardType;
-import org.example.application.socialmedia.model.Card;
-import org.example.application.socialmedia.respository.PackagesRepository;
+import org.example.application.game.model.card.Card;
+import org.example.application.game.respository.CardRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
 import org.example.server.http.ContentType;
@@ -13,10 +12,10 @@ import org.example.server.http.StatusCode;
 
 public class CardController {
 
-    private final PackagesRepository packagesRepository;
+    private final CardRepository cardRepository;
 
-    public CardController(PackagesRepository packagesRepository){
-        this.packagesRepository = packagesRepository;
+    public CardController(CardRepository cardRepository){
+        this.cardRepository = cardRepository;
     }
 
     public Response handle(Request request){
@@ -38,7 +37,7 @@ public class CardController {
         response.setContentType(ContentType.APPLICATION_JSON);
         String content = null;
         try {
-            content = objectMapper.writeValueAsString(packagesRepository.findAll());
+            content = objectMapper.writeValueAsString(cardRepository.findAll());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -58,7 +57,7 @@ public class CardController {
             throw new RuntimeException(e);
         }
 
-        card = packagesRepository.save(card);
+        card = cardRepository.save(card);
 
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);

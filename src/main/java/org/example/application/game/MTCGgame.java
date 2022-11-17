@@ -1,34 +1,35 @@
-package org.example.application.socialmedia;
+package org.example.application.game;
 
-import org.example.application.socialmedia.controller.CardController;
-import org.example.application.socialmedia.respository.PackagesMemoryRepository;
-import org.example.application.socialmedia.respository.PackagesRepository;
-import org.example.application.socialmedia.controller.UserController;
-import org.example.application.socialmedia.respository.UserMemoryRepository;
-import org.example.application.socialmedia.respository.UserRepository;
+import org.example.application.game.controller.CardController;
+import org.example.application.game.controller.UserController;
+import org.example.application.game.respository.CardMemoryRepository;
+import org.example.application.game.respository.CardRepository;
+import org.example.application.game.respository.UserMemoryRepository;
+import org.example.application.game.respository.UserRepository;
 import org.example.server.Application;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
 import org.example.server.http.ContentType;
 import org.example.server.http.StatusCode;
 
-public class SocialMediaApp implements Application {
+public class MTCGgame implements Application {
 
     private UserController userController;
     private CardController cardController;
 
-    public SocialMediaApp() {
+    public MTCGgame() {
         UserRepository userRepository = new UserMemoryRepository();
         this.userController = new UserController(userRepository);
-        PackagesRepository packagesRepository = new PackagesMemoryRepository();
-        this.cardController = new CardController(packagesRepository);
+        CardRepository cardRepository = new CardMemoryRepository();
+        this.cardController = new CardController(cardRepository);
     }
 
     @Override
     public Response handle(Request request) {
-        if (request.getPath().startsWith("/users")) {
+        if (request.getPath().startsWith("/users")||request.getPath().startsWith("/sessions")) {
             return userController.handle(request);
         }
+
         if (request.getPath().startsWith("/packages")){
             return cardController.handle(request);
         }

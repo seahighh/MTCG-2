@@ -1,16 +1,16 @@
-package org.example.application.socialmedia.respository;
+package org.example.application.game.respository;
 
-import org.example.application.socialmedia.model.Card;
+import org.example.application.game.model.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackagesMemoryRepository implements PackagesRepository {
+public class CardMemoryRepository implements CardRepository {
 
     private final List<Card> Cards;
 
 
-    public PackagesMemoryRepository() {
+    public CardMemoryRepository() {
         this.Cards = new ArrayList<>();
     }
 

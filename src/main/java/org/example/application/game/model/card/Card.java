@@ -1,6 +1,4 @@
-package org.example.application.socialmedia.model;
-
-import org.example.application.card.ElementType;
+package org.example.application.game.model.card;
 
 public class Card{
     private String id;

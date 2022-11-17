@@ -1,4 +1,4 @@
-package org.example.application.card;
+package org.example.application.game.model.card;
 
 
 public enum CardType {

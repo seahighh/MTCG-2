@@ -1,15 +1,14 @@
 package org.example;
 
 
-import org.example.application.socialmedia.SocialMediaApp;
-
+import org.example.application.game.MTCGgame;
 import org.example.server.Server;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Server server = new Server(new SocialMediaApp());
+        Server server = new Server(new MTCGgame());
         try {
             server.start();
         } catch (IOException e) {

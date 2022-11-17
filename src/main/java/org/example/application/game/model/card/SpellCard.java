@@ -1,6 +1,4 @@
-package org.example.application.card;
-
-import org.example.application.socialmedia.model.Card;
+package org.example.application.game.model.card;
 
 public class SpellCard extends Card {
     CardType cardType = CardType.SPELL;
