@@ -41,7 +41,11 @@ public class RequestHandler implements Runnable {
 
     private Request getRequest() throws IOException, UnsupportedProtocolException {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//        Request request = new Request();
+//        request.authorizeRequest();
         String request = RequestReader.read(in);
+
+
 
         return RequestBuilder.build(request);
     }

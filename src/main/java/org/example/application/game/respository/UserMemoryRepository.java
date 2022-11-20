@@ -24,7 +24,7 @@ public class UserMemoryRepository implements UserRepository {
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps =conn.prepareStatement("SELECT * FROM users WHERE username = ?;");
+            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -51,6 +51,8 @@ public class UserMemoryRepository implements UserRepository {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username, password) VALUES(?. ?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
+//            ps.setString(3, user.getToken());
+//            ps.setString(4, user.getStatus());
             ps.close();;
             conn.close();
         } catch (SQLException e) {

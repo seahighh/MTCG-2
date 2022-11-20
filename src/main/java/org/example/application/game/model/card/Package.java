@@ -1,8 +1,12 @@
 package org.example.application.game.model.card;
 
+import lombok.Builder;
+
 import java.util.List;
 
+@Builder
 public class Package {
+
     private String id;
 
     private List<Card> Cards;

@@ -1,9 +1,6 @@
 package org.example.application.game.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.StandardCharsets;
 
 
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
@@ -13,7 +10,17 @@ public class User {
 
     private String password;
 
+    private String token;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     private int coins;
 
@@ -42,13 +49,21 @@ public class User {
         this.password = password;
     }
 
-    public boolean authorize(String password) {
-        String passwordHash = Hashing.sha256()
-                //bcrypt
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
-        return passwordHash.equals(getPassword());
+    public String getToken() {
+        return token;
     }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+//    public boolean authorize(String password) {
+//        String passwordHash = Hashing.sha256()
+//                //bcrypt
+//                .hashString(password, StandardCharsets.UTF_8)
+//                .toString();
+//        return passwordHash.equals(getPassword());
+//    }
 
 
 }

@@ -62,7 +62,6 @@ public class Card{
         return card;
     }
 
-
     public void setDamage(float damage) {
         this.damage = damage;
     }
