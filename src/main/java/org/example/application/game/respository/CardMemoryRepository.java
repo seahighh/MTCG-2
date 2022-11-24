@@ -82,7 +82,7 @@ public class CardMemoryRepository implements CardRepository {
     public Card save(Card card) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(name, damage, element_type, card_type, package_id, user_name) VALUES (?. ?. ?. ?. ?. ?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(name, damage, element_type, card_type, package_id, user_name) VALUES (?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, card.getName());
             ps.setFloat(2, card.getDamage());
             ps.setString(3, card.getElementType().toString());

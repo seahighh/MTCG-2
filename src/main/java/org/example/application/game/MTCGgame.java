@@ -26,7 +26,7 @@ public class MTCGgame implements Application {
 
     @Override
     public Response handle(Request request) {
-        if (request.getPath().startsWith("/users")||request.getPath().startsWith("/sessions")) {
+        if (request.getPath().startsWith("/users")||request.getPath().startsWith("/sessions")) {//sessionsController
             return userController.handle(request);
         }
 

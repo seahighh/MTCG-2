@@ -3,7 +3,10 @@ package org.example.application.game.respository;
 import org.example.Database.Database;
 import org.example.application.game.model.user.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,12 +72,13 @@ public class UserMemoryRepository implements UserRepository {
     public User save(User user) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username, password, token, status, coins) VALUES(?. ?. ?. ?. ?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username, password, token, status, coins) VALUES(?, ?, ?, ?, ?);");
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getToken());
             ps.setString(4, user.getStatus());
             ps.setInt(5, user.getCoins());
+            ps.execute();
             ps.close();;
             conn.close();
         } catch (SQLException e) {
@@ -84,6 +88,7 @@ public class UserMemoryRepository implements UserRepository {
         return user;
     }
 
+    @Override
     public User updateUser(String name, User user){
         Connection conn = Database.getInstance().getConnection();
         User preUser = this.findByUsername(name);

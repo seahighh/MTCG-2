@@ -5,7 +5,6 @@ public class Card{
     private String name;
     private float damage;
     ElementType elementType;
-
     CardType cardType;
 
     public Card(String id, String name, float damage, ElementType elementType){
