@@ -1,9 +1,11 @@
 package org.example.application.game.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 
 
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+@Builder
 public class User {
 
     private String username;
@@ -22,14 +24,19 @@ public class User {
         this.status = status;
     }
 
-    private int coins;
+    private int coins = 20;
+
+
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String token, String status, int coins) {
         this.username = username;
         this.password = password;
+        this.token = token;
+        this.status = status;
+        this.coins = 20;
     }
 
     public String getUsername() {
@@ -56,13 +63,16 @@ public class User {
     public void setToken(String token) {
         this.token = token;
     }
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
 
 //    public boolean authorize(String password) {
-//        String passwordHash = Hashing.sha256()
-//                //bcrypt
-//                .hashString(password, StandardCharsets.UTF_8)
-//                .toString();
-//        return passwordHash.equals(getPassword());
+//        String passwordHash
 //    }
 
 

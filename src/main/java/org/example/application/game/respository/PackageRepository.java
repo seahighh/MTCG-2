@@ -13,6 +13,7 @@ public interface PackageRepository {
     List<Package> getPackages();
 
     Package addPackage(Package packages);
+    Package deletePackages(Package packages);
 
     boolean addPackageToUser(Package packages, User user);
 }

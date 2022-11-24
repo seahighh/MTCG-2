@@ -1,7 +1,6 @@
 package org.example.server.dto;
 
 import org.example.application.game.model.user.User;
-import org.example.application.game.respository.UserMemoryRepository;
 
 import java.util.HashMap;
 
@@ -88,23 +87,7 @@ public class Request {
 
     public void authorizeRequest(){
         String authorization = headers.get("Authorization");
-        if (authorization != null){
-            String token = authorization.replace("Basic", "");
-            String[] parts = token.split("_");
-            if (parts.length == 2){
-                User user = new User();
-                UserMemoryRepository umr = new UserMemoryRepository();
-                user = (User) umr.findByUsername(parts[0]);
-                if(user != null && token.equals(user.getToken())){
-                    authUser = user;
-                }
-
-            }
-        }
     }
-
-
-
 
 
     public HashMap<String, String> getHeaders() {

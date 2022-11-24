@@ -17,7 +17,28 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return this.users;
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM users;");
+            ResultSet rs = ps.executeQuery();
+            List<User> users = new ArrayList<>();
+            while(rs.next()){
+                users.add(User.builder()
+                        .username(rs.getString(1))
+                        .password(rs.getString(2))
+                        .token(rs.getString(3))
+                        .status(rs.getString(4))
+                        .coins(rs.getInt(5))
+                        .build());
+
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -48,11 +69,12 @@ public class UserMemoryRepository implements UserRepository {
     public User save(User user) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username, password) VALUES(?. ?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username, password, token, status, coins) VALUES(?. ?. ?. ?. ?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
-//            ps.setString(3, user.getToken());
-//            ps.setString(4, user.getStatus());
+            ps.setString(3, user.getToken());
+            ps.setString(4, user.getStatus());
+            ps.setInt(5, user.getCoins());
             ps.close();;
             conn.close();
         } catch (SQLException e) {
@@ -62,11 +84,42 @@ public class UserMemoryRepository implements UserRepository {
         return user;
     }
 
+    public User updateUser(String name, User user){
+        Connection conn = Database.getInstance().getConnection();
+        User preUser = this.findByUsername(name);
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET username = ?, password = ?, token = ?,status = ?,coins = ? WHERE usernam = ?;");
+            ps.setString(1, user.getUsername() !=null ? user.getUsername() : preUser.getUsername());
+            ps.setString(2, user.getPassword() !=null ? user.getPassword() : preUser.getPassword());
+            ps.setString(3, user.getToken() !=null? user.getToken() : preUser.getToken());
+            ps.setString(4, user.getStatus() !=null ? user.getStatus() : preUser.getStatus());
+            ps.setInt(5, user.getCoins());
+            ps.setString(6, user.getUsername());
+
+            ps.close();
+            conn.close();
+            return this.findByUsername(name);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
     @Override
     public User delete(User user) {
-        if (this.users.contains(user)) {
-            this.users.remove(user);
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE username = ?");
+            ps.setString(1, user.getUsername());
+
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
 
         return user;
     }

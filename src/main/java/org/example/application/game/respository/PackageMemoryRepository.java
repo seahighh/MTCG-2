@@ -39,7 +39,7 @@ public class PackageMemoryRepository implements PackageRepository{
         Connection conn = Database.getInstance().getConnection();
         try {
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name FROM packages ORDER BY random() LIMIT 1;");
+            ResultSet rs = sm.executeQuery("SELECT id, name FROM packages ORDER BY random() LIMIT 1;"); //one data only
 
             if (rs.next()){
                 Package packages = Package.builder()
@@ -106,5 +106,22 @@ public class PackageMemoryRepository implements PackageRepository{
     @Override
     public boolean addPackageToUser(Package packages, User user) {
         return false;
+    }
+
+    @Override
+    public Package deletePackages(Package packages){
+        Connection conn = Database.getInstance().getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("DELETE FROM packages WHERE id = ?");
+            ps.setString(1, packages.getId());
+
+            ps.close();
+            conn.close();
+            return packages;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

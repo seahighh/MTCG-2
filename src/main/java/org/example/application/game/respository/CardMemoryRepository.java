@@ -21,8 +21,10 @@ public class CardMemoryRepository implements CardRepository {
     public List<Card> findAll(){
         Connection conn = Database.getInstance().getConnection();
         try {
-            Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name, damage, card_type, element_type FROM cards");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type FROM cards");
+
+
+            ResultSet rs = ps.executeQuery();
 
             List<Card> cards = new ArrayList<>();
 
@@ -37,7 +39,7 @@ public class CardMemoryRepository implements CardRepository {
 
             }
             rs.close();
-            sm.close();
+            ps.close();
             conn.close();
 
             return cards;
@@ -128,9 +130,8 @@ public class CardMemoryRepository implements CardRepository {
     }
     public List<Card> getCardsForPackage(Package packages){
         Connection conn = Database.getInstance().getConnection();
-        PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type FROM cards WHERE package_id = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type FROM cards WHERE package_id = ?;");
             ps.setString(1, packages.getId());
 
             ResultSet rs = ps.executeQuery();
@@ -159,9 +160,8 @@ public class CardMemoryRepository implements CardRepository {
 
     public Card addCardToPackage(Card card, Package packages){
         Connection conn = Database.getInstance().getConnection();
-        PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("UPDATE cards SET package_id = ? WHERE id = ?;");
+            PreparedStatement ps = conn.prepareStatement("UPDATE cards SET package_id = ? WHERE id = ?;");
             ps.setString(1, packages.getId());
             ps.setString(2, card.getId());
 
@@ -191,9 +191,19 @@ public class CardMemoryRepository implements CardRepository {
 
     @Override
     public Card delete(Card card) {
-        if (this.Cards.contains(card)){
-            this.Cards.remove(card);
+        Connection conn = Database.getInstance().getConnection();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM cards WHERE id = ?");
+            ps.setString(1, card.getId());
+
+            ps.close();
+            conn.close();
+
+            return card;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }
