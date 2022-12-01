@@ -14,7 +14,6 @@ import org.example.application.game.server.http.Method;
 import org.example.application.game.server.http.StatusCode;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 
 public class UserController {
 
@@ -81,12 +80,10 @@ public class UserController {
                         .token(user.getUsername() + "-" + "mtcgToken")
                         .password(Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString())
                         .build());
-
-
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
+        String content;
         try {
             content = objectMapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
@@ -97,19 +94,4 @@ public class UserController {
         return response;
     }
 
-    private Response doLogin(Request request){
-        Properties data = g.fromJson(request.getContent(), Properties.class);
-        User user;
-        Response response = new Response();
-        String username = data.getProperty("username");
-        String password = data.getProperty("password");
-        if (username != null && password != null) {
-            user = userRepository.findByUsername(username);
-            if (user.authorize(password)) {
-                response.setStatusCode(StatusCode.OK);
-                response.setContentType(ContentType.APPLICATION_JSON);
-            }
-        }
-        return response;
-    }
 }

@@ -35,41 +35,35 @@ public class SessionController {
         return response;
     }
 
-//    private Response doLogin(Request request){
-//        Properties data = g.fromJson(request.getContent(), Properties.class);
-//        User user;
-//        Response response = new Response();
-//        String username = data.getProperty("username");
-//        String password = data.getProperty("password");
-//        if (username != null && password != null) {
-//            user = userRepository.findByUsername(username);
-//            if (user.authorize(password)) {
-//                response.setStatusCode(StatusCode.OK);
-//                response.setContentType(ContentType.APPLICATION_JSON);
-//            }
-//        }
-//        return response;
-//    }
 
     private Response read(Request request){
         Response response = new Response();
         ObjectMapper objectMapper = new ObjectMapper();
-        User user = null;
+        String json = request.getContent();
+        User user;
+
         try {
-            user = objectMapper.readValue(response.getContent(), User.class);
+            user = objectMapper.readValue(json, User.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
+
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
+        String content;
         try {
-            content = objectMapper.writeValueAsString(userRepository.findByUsername(user.getUsername()));
+            content = objectMapper.writeValueAsString(userRepository.login(user.getUsername(), user.getPassword()));
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        response.setContent(content);
+        if (content.equals("null")){
+            content = "Login fail";
+            response.setContent(content);
+        }else {
+            response.setContent(content);
+        }
         return response;
-
     }
 }

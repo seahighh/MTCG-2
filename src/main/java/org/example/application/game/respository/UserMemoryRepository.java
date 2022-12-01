@@ -48,7 +48,7 @@ public class UserMemoryRepository implements UserRepository {
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps =conn.prepareStatement("SELECT username, password, token, status, coins FROM users WHERE username = ?;");
+            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -56,15 +56,11 @@ public class UserMemoryRepository implements UserRepository {
                 User user = User.builder()
                         .username(rs.getString(1))
                         .password(rs.getString(2))
-                        .token(rs.getString(3))
-                        .status(rs.getString(4))
-                        .coins(rs.getInt(5))
                         .build();
                 rs.close();
                 ps.close();
                 conn.close();
                 return user;
-
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -93,28 +89,53 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User updateUser(String name, User user){
+    public User login(String username, String password) {
         Connection conn = Database.getInstance().getConnection();
-        User preUser = this.findByUsername(name);
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE users SET username = ?, password = ?, token = ?,status = ?,coins = ? WHERE usernam = ?;");
-            ps.setString(1, user.getUsername() !=null ? user.getUsername() : preUser.getUsername());
-            ps.setString(2, user.getPassword() !=null ? user.getPassword() : preUser.getPassword());
-            ps.setString(3, user.getToken() !=null? user.getToken() : preUser.getToken());
-            ps.setString(4, user.getStatus() !=null ? user.getStatus() : preUser.getStatus());
-            ps.setInt(5, user.getCoins());
-            ps.setString(6, user.getUsername());
+            PreparedStatement ps = conn.prepareStatement("SELECT username, password FROM users WHERE username ? AND password = ?");
+            ps.setString(1, username);
+            ps.setString(2,password);
+            ResultSet rs = ps.executeQuery();
 
-            ps.close();
-            conn.close();
-            return this.findByUsername(name);
-
+            if (rs.next()){
+                User user = User.builder()
+                        .username(rs.getString(1))
+                        .password(rs.getString(2))
+                        .build();
+                rs.close();
+                ps.close();
+                conn.close();
+                return user;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
+        return null;
     }
+
+//    @Override
+////    public User updateUser(String name, User user){
+////        Connection conn = Database.getInstance().getConnection();
+////        User preUser = this.findByUsername(name);
+////        try {
+////            PreparedStatement ps = conn.prepareStatement("UPDATE users SET username = ?, password = ?, token = ?,status = ?,coins = ? WHERE usernam = ?;");
+////            ps.setString(1, user.getUsername() !=null ? user.getUsername() : preUser.getUsername());
+////            ps.setString(2, user.getPassword() !=null ? user.getPassword() : preUser.getPassword());
+////            ps.setString(3, user.getToken() !=null? user.getToken() : preUser.getToken());
+////            ps.setString(4, user.getStatus() !=null ? user.getStatus() : preUser.getStatus());
+////            ps.setInt(5, user.getCoins());
+////            ps.setString(6, user.getUsername());
+////
+////            ps.close();
+////            conn.close();
+////            return this.findByUsername(name);
+////
+////        } catch (SQLException e) {
+////            throw new RuntimeException(e);
+////        }
+////
+////
+////    }
 
     @Override
     public User delete(User user) {
