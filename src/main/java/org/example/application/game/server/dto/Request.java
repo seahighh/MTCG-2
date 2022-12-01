@@ -1,4 +1,4 @@
-package org.example.server.dto;
+package org.example.application.game.server.dto;
 
 import org.example.application.game.model.user.User;
 
@@ -17,6 +17,14 @@ public class Request {
 
     HashMap<String, String> headers;
     private User authUser;
+
+    public User getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(User authUser) {
+        this.authUser = authUser;
+    }
 
     public Request() {
     }

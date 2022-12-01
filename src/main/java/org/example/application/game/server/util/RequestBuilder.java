@@ -1,10 +1,7 @@
-package org.example.server.util;
+package org.example.application.game.server.util;
 
-import org.example.server.dto.Request;
-import org.example.server.exception.UnsupportedProtocolException;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.example.application.game.server.dto.Request;
+import org.example.application.game.server.exception.UnsupportedProtocolException;
 
 public class RequestBuilder {
 

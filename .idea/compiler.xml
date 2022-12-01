@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="swen1" />
+        <module name="MTCG-2" />
         <module name="MTCG-1" />
       </profile>
     </annotationProcessing>

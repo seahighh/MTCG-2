@@ -1,6 +1,6 @@
 package org.example.application.game.respository;
 
-import org.example.Database.Database;
+import org.example.application.game.Database.Database;
 import org.example.application.game.model.user.User;
 
 import java.sql.Connection;
@@ -48,18 +48,22 @@ public class UserMemoryRepository implements UserRepository {
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?;");
+            PreparedStatement ps =conn.prepareStatement("SELECT username, password, token, status, coins FROM users WHERE username = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                User user = new User();
-                user.setUsername(rs.getString(1));
-                user.setPassword(rs.getString(2));
-
+                User user = User.builder()
+                        .username(rs.getString(1))
+                        .password(rs.getString(2))
+                        .token(rs.getString(3))
+                        .status(rs.getString(4))
+                        .coins(rs.getInt(5))
+                        .build();
                 rs.close();
                 ps.close();
                 conn.close();
+                return user;
 
             }
         } catch (SQLException e) {

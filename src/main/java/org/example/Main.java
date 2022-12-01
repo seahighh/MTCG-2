@@ -2,7 +2,7 @@ package org.example;
 
 
 import org.example.application.game.MTCGgame;
-import org.example.server.Server;
+import org.example.application.game.server.Server;
 
 import java.io.IOException;
 

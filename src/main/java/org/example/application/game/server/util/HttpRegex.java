@@ -1,6 +1,4 @@
-package org.example.server.util;
-
-import org.example.server.exception.UnsupportedProtocolException;
+package org.example.application.game.server.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

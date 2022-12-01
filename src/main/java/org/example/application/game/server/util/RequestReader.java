@@ -1,9 +1,7 @@
-package org.example.server.util;
+package org.example.application.game.server.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RequestReader {
 

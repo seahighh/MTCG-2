@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.application.game.model.card.Package;
 import org.example.application.game.respository.PackageRepository;
-import org.example.server.dto.Request;
-import org.example.server.dto.Response;
-import org.example.server.http.ContentType;
-import org.example.server.http.Method;
-import org.example.server.http.StatusCode;
+import org.example.application.game.server.dto.Request;
+import org.example.application.game.server.dto.Response;
+import org.example.application.game.server.http.ContentType;
+import org.example.application.game.server.http.Method;
+import org.example.application.game.server.http.StatusCode;
 
 public class PackageController {
     private final PackageRepository packageRepository;

@@ -1,6 +1,6 @@
 package org.example.application.game.respository;
 
-import org.example.Database.Database;
+import org.example.application.game.Database.Database;
 import org.example.application.game.model.card.Card;
 import org.example.application.game.model.card.Package;
 import org.example.application.game.model.user.User;

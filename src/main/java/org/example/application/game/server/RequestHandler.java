@@ -1,10 +1,10 @@
-package org.example.server;
+package org.example.application.game.server;
 
-import org.example.server.dto.Request;
-import org.example.server.dto.Response;
-import org.example.server.exception.UnsupportedProtocolException;
-import org.example.server.util.RequestBuilder;
-import org.example.server.util.RequestReader;
+import org.example.application.game.server.dto.Request;
+import org.example.application.game.server.dto.Response;
+import org.example.application.game.server.exception.UnsupportedProtocolException;
+import org.example.application.game.server.util.RequestBuilder;
+import org.example.application.game.server.util.RequestReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

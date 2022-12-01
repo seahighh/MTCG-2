@@ -1,4 +1,4 @@
-package org.example.Database;
+package org.example.application.game.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

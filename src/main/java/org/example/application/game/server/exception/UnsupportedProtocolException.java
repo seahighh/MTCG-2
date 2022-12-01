@@ -1,4 +1,4 @@
-package org.example.server.exception;
+package org.example.application.game.server.exception;
 
 public class UnsupportedProtocolException extends Exception {
 

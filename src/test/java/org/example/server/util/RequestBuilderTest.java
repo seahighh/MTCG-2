@@ -1,11 +1,13 @@
 package org.example.server.util;
 
-import org.example.server.dto.Request;
-import org.example.server.exception.UnsupportedProtocolException;
-import org.example.server.http.Method;
+import org.example.application.game.server.dto.Request;
+import org.example.application.game.server.exception.UnsupportedProtocolException;
+import org.example.application.game.server.http.Method;
+import org.example.application.game.server.util.RequestBuilder;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RequestBuilderTest {
 

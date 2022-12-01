@@ -1,7 +1,7 @@
-package org.example.server.dto;
+package org.example.application.game.server.dto;
 
-import org.example.server.http.ContentType;
-import org.example.server.http.StatusCode;
+import org.example.application.game.server.http.ContentType;
+import org.example.application.game.server.http.StatusCode;
 
 public class Response {
 

@@ -1,6 +1,4 @@
-package org.example.server;
-
-import org.example.server.exception.UnsupportedProtocolException;
+package org.example.application.game.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

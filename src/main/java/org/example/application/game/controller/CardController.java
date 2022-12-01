@@ -2,17 +2,19 @@ package org.example.application.game.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.example.application.game.model.card.Card;
 import org.example.application.game.respository.CardRepository;
-import org.example.server.dto.Request;
-import org.example.server.dto.Response;
-import org.example.server.http.ContentType;
-import org.example.server.http.Method;
-import org.example.server.http.StatusCode;
+import org.example.application.game.server.dto.Request;
+import org.example.application.game.server.dto.Response;
+import org.example.application.game.server.http.ContentType;
+import org.example.application.game.server.http.Method;
+import org.example.application.game.server.http.StatusCode;
 
 public class CardController {
 
     private final CardRepository cardRepository;
+    private Gson g;
 
     public CardController(CardRepository cardRepository){
         this.cardRepository = cardRepository;

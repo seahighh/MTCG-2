@@ -1,4 +1,4 @@
-package org.example.server.http;
+package org.example.application.game.server.http;
 
 public enum ContentType {
     TEXT_PLAIN("text/plain"),
