@@ -1,8 +1,10 @@
 package org.example.application.game.respository;
 
+import com.google.common.hash.Hashing;
 import org.example.application.game.Database.Database;
 import org.example.application.game.model.user.User;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +15,17 @@ import java.util.List;
 public class UserMemoryRepository implements UserRepository {
 
     private final List<User> users;
+    private static UserMemoryRepository instance;
 
     public UserMemoryRepository() {
         this.users = new ArrayList<>();
+    }
+
+    public static UserMemoryRepository getInstance() {
+        if (UserMemoryRepository.instance == null) {
+            UserMemoryRepository.instance = new UserMemoryRepository();
+        }
+        return UserMemoryRepository.instance;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class UserMemoryRepository implements UserRepository {
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?");
+            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -92,16 +102,18 @@ public class UserMemoryRepository implements UserRepository {
     public User login(String username, String password) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT username, password FROM users WHERE username ? AND password = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT username, password FROM users WHERE username = ? AND password = ?;");
+            String passwordHash = Hashing.sha256()
+                    .hashString(password, StandardCharsets.UTF_8)
+                    .toString();
             ps.setString(1, username);
-            ps.setString(2,password);
+            ps.setString(2, passwordHash);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                User user = User.builder()
-                        .username(rs.getString(1))
-                        .password(rs.getString(2))
-                        .build();
+                User user = new User();
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
                 rs.close();
                 ps.close();
                 conn.close();

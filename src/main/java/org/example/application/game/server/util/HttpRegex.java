@@ -74,4 +74,9 @@ public class HttpRegex {
 
         return m.group(1);
     }
+
+    public static String findHeaderAsAuth(String request, String header){
+        String value = findHeader(request, header);
+        return null;
+    }
 }

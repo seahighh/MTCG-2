@@ -74,24 +74,41 @@ public class UserController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        user = userRepository.save(
-                user.toBuilder()
-                        .token(user.getUsername() + "-" + "mtcgToken")
-                        .password(Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString())
-                        .build());
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        String content;
+        String content_a;
         try {
-            content = objectMapper.writeValueAsString(user);
+            content_a = objectMapper.writeValueAsString(userRepository.findByUsername(user.getUsername()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        response.setContent(content);
 
-        return response;
+        if (content_a.equals("null")){
+            user = userRepository.save(
+                    user.toBuilder()
+                            .token(user.getUsername() + "-" + "mtcgToken")
+                            .password(Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString())
+                            .build());
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            String content;
+            try {
+                content = objectMapper.writeValueAsString(user);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            response.setContent(content);
+
+            return response;
+        }
+        else {
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            String content_b = "User already exist!";
+            response.setContent(content_b);
+            return response;
+        }
+
     }
 
 }

@@ -25,6 +25,10 @@ public class RequestBuilder {
         // Content Length
         request.setContentLength(HttpRegex.findHeaderAsInt(requestString, "Content-Length"));
 
+        //Content Authorization of Header
+
+        request.setAuthUser(HttpRegex.findHeaderAsAuth(requestString, "Authorization"));
+
         // Content
         request.setContent(HttpRegex.findContent(requestString));
 

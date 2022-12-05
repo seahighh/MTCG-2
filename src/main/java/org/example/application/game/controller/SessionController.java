@@ -64,6 +64,7 @@ public class SessionController {
         }else {
             response.setContent(content);
         }
+
         return response;
     }
 }

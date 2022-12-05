@@ -1,7 +1,5 @@
 package org.example.application.game.server.dto;
 
-import org.example.application.game.model.user.User;
-
 import java.util.HashMap;
 
 public class Request {
@@ -16,20 +14,14 @@ public class Request {
     private String request;
 
     HashMap<String, String> headers;
-    private User authUser;
+    private String authUser;
 
-    public User getAuthUser() {
-        return authUser;
-    }
 
-    public void setAuthUser(User authUser) {
-        this.authUser = authUser;
-    }
 
     public Request() {
     }
 
-    public Request(String method, String path, String contentType, int contentLength, String content, String request, User authUser, HashMap<String, String> headers) {
+    public Request(String method, String path, String contentType, int contentLength, String content, String request, String authUser, HashMap<String, String> headers) {
         this.method = method;
         this.path = path;
         this.contentType = contentType;
@@ -88,14 +80,33 @@ public class Request {
         this.request = request;
     }
 
+    public String getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(String authUser) {
+        this.authUser = authUser;
+    }
+
     @Override
     public String toString() {
         return request;
     }
 
-    public void authorizeRequest(){
-        String authorization = headers.get("Authorization");
-    }
+//    public void authorizeRequest(){
+//        String authorizationHeader = headers.get("Authorization");
+//        if (authorizationHeader != null) {
+//            String token = authorizationHeader.replace("Basic ", "");
+//            String[] parts = token.split("-");
+//            if (parts.length == 2) {
+//                User user = (User) UserMemoryRepository.getInstance().findByUsername(parts[0]);
+//                if (user != null && token.equals(user.getToken())) {
+//                    authUser = user;
+//                }
+//            }
+//        }
+//
+//    }
 
 
     public HashMap<String, String> getHeaders() {
