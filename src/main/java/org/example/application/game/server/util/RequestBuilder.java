@@ -26,7 +26,6 @@ public class RequestBuilder {
         request.setContentLength(HttpRegex.findHeaderAsInt(requestString, "Content-Length"));
 
         //Content Authorization of Header
-
         request.setAuthUser(HttpRegex.findHeaderAsAuth(requestString, "Authorization"));
 
         // Content
@@ -49,7 +48,6 @@ public class RequestBuilder {
 
     private static String getPath(String requestString) throws UnsupportedProtocolException {
         String path = HttpRegex.findPath(requestString);
-
         if (null == path) {
             throw new UnsupportedProtocolException("No HTTP path in request");
         }

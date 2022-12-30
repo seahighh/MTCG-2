@@ -11,6 +11,8 @@ public class Response {
     private String contentType;
     private String content = "";
 
+    private String Authorization;
+
     public void setStatusCode(StatusCode statusCode) {
         this.status = statusCode.code;
         this.message = statusCode.message;
