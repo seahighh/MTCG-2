@@ -6,14 +6,15 @@ import org.example.application.game.model.user.User;
 import java.util.List;
 
 public interface PackageRepository {
-    Package getPackage(String id);
+    Package getPackage(int id);
 
     Package getRandomPackage();
 
     List<Package> getPackages();
 
-    Package addPackage(Package packages);
-    Package deletePackages(Package packages);
+    Package addPackage();
+    boolean deletePackages(int id);
 
     boolean addPackageToUser(Package packages, User user);
+
 }

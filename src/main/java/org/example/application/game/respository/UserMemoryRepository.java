@@ -55,6 +55,36 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
+    public User getUserById(int id) {
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * from users WHERE id = ?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setToken(rs.getString("token"));
+                user.setCoins(rs.getInt("coins"));
+                user.setStatus(rs.getString("status"));
+                user.setElo(rs.getInt("elo"));
+                rs.close();
+                ps.close();
+                conn.close();
+
+                return user;
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
@@ -96,6 +126,23 @@ public class UserMemoryRepository implements UserRepository {
         }
 
         return user;
+    }
+
+    @Override
+    public User updateCoin(User user) {
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE users set coins = ? WHERE username = ?;");
+            ps.setInt(1, user.getCoins());
+            ps.setString(2, user.getUsername());
+
+            ps.close();
+            conn.close();
+
+            return this.findByUsername(user.getUsername());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

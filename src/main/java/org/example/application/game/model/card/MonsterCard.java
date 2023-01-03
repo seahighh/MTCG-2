@@ -6,7 +6,7 @@ public class MonsterCard extends Card {
     CardType cardType =CardType.MONSTER;
 
     @Builder
-    public MonsterCard(String id, String name, float damage, ElementType elementType){
+    public MonsterCard(String id, String name, float damage, String elementType){
         super(id, name, damage, elementType);
         this.cardType =CardType.MONSTER;
 

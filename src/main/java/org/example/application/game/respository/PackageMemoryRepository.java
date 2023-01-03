@@ -1,6 +1,7 @@
 package org.example.application.game.respository;
 
 import org.example.application.game.Database.Database;
+import org.example.application.game.model.card.Card;
 import org.example.application.game.model.card.Package;
 import org.example.application.game.model.user.User;
 
@@ -10,17 +11,20 @@ import java.util.List;
 
 
 public class PackageMemoryRepository implements PackageRepository{
-    public Package getPackage(String id){
+
+    private UserMemoryRepository userMemoryRepository;
+    private CardMemoryRepository cardMemoryRepository;
+    public Package getPackage(int id){
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name FROM packages WHERE id = ?;");
-            ps.setString(1, id);
+            PreparedStatement ps = conn.prepareStatement("SELECT id, price FROM packages WHERE id = ?;");
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
                 Package packages = Package.builder()
-                        .id(rs.getString(1))
-                        .name(rs.getString(2))
+                        .id(rs.getInt(1))
+                        .price(rs.getInt(2))
                         .build();
                 rs.close();
                 ps.close();
@@ -39,12 +43,12 @@ public class PackageMemoryRepository implements PackageRepository{
         Connection conn = Database.getInstance().getConnection();
         try {
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name FROM packages ORDER BY random() LIMIT 1;"); //one data only
+            ResultSet rs = sm.executeQuery("SELECT id, price FROM packages ORDER BY id;"); //one data only
 
             if (rs.next()){
                 Package packages = Package.builder()
-                        .id(rs.getString(1))
-                        .name(rs.getString(2))
+                        .id(rs.getInt(1))
+                        .price(rs.getInt(2))
                         .build();
                 rs.close();
                 sm.close();
@@ -65,13 +69,13 @@ public class PackageMemoryRepository implements PackageRepository{
         Connection conn = Database.getInstance().getConnection();
         try {
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name FROM packages");
+            ResultSet rs = sm.executeQuery("SELECT id, price FROM packages");
 
             List<Package> packageList = new ArrayList<>();
             while (rs.next()){
                 packageList.add(Package.builder()
-                        .id(rs.getString(1))
-                        .name(rs.getString(2))
+                        .id(rs.getInt(1))
+                        .price(rs.getInt(2))
                         .build());
             }
 
@@ -87,13 +91,13 @@ public class PackageMemoryRepository implements PackageRepository{
     }
 
     @Override
-    public Package addPackage(Package packages) {
+    public Package addPackage() {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(name) VALUES (?);");
-            ps.setString(1, packages.getName());
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES (?);");
+            ps.setInt(1, 5);
 
-            ps.close();
+            ps.execute();
             conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -105,20 +109,32 @@ public class PackageMemoryRepository implements PackageRepository{
 
     @Override
     public boolean addPackageToUser(Package packages, User user) {
-        return false;
+        user = userMemoryRepository.findByUsername(user.getUsername());
+        if (user.getCoins() < 5){
+            return false;
+        }
+        user.setCoins(user.getCoins() - packages.getPrice());
+
+        userMemoryRepository.updateCoin(user);
+
+        for (Card card : cardMemoryRepository.getCardsForPackage(packages)){
+            cardMemoryRepository.addCardToUser(card, user);
+        }
+        this.deletePackages(packages.getId());
+        return true;
     }
 
     @Override
-    public Package deletePackages(Package packages){
+    public boolean deletePackages(int id){
         Connection conn = Database.getInstance().getConnection();
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("DELETE FROM packages WHERE id = ?");
-            ps.setString(1, packages.getId());
+            ps.setInt(1, id);
 
             ps.close();
             conn.close();
-            return packages;
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

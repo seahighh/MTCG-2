@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.example.application.game.model.card.Card;
 import org.example.application.game.respository.CardRepository;
+import org.example.application.game.respository.UserRepository;
 import org.example.application.game.server.dto.Request;
 import org.example.application.game.server.dto.Response;
 import org.example.application.game.server.http.ContentType;
@@ -16,7 +17,7 @@ public class CardController {
     private final CardRepository cardRepository;
     private Gson g;
 
-    public CardController(CardRepository cardRepository){
+    public CardController(CardRepository cardRepository, UserRepository userRepository){
         this.cardRepository = cardRepository;
     }
 

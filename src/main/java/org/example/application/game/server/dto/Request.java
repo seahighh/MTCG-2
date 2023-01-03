@@ -93,20 +93,7 @@ public class Request {
         return request;
     }
 
-//    public void authorizeRequest(){
-//        String authorizationHeader = headers.get("Authorization");
-//        if (authorizationHeader != null) {
-//            String token = authorizationHeader.replace("Basic ", "");
-//            String[] parts = token.split("-");
-//            if (parts.length == 2) {
-//                User user = (User) UserMemoryRepository.getInstance().findByUsername(parts[0]);
-//                if (user != null && token.equals(user.getToken())) {
-//                    authUser = user;
-//                }
-//            }
-//        }
-//
-//    }
+
 
 
     public HashMap<String, String> getHeaders() {

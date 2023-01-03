@@ -3,9 +3,15 @@ package org.example.application.game.model.card;
 
 public enum ElementType {
 
-    FIRE,
+    FIRE("Fire"),
 
-    WATER,
+    WATER("Water"),
 
-    NORMAL
+    NORMAL("Normal");
+
+    public String message;
+
+    ElementType(String message){
+        this.message = message;
+    }
 }

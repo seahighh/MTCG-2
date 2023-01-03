@@ -30,6 +30,8 @@ public class RequestHandler implements Runnable {
         try {
             Request request = getRequest();
             Response response = application.handle(request);
+
+            //发送响应内容，这里可以使用视频中的，调用不同的App处理不同的路径，在对应的handle里处理完response以后传回这里，再传回浏览器，分层解耦
             sendResponse(response);
         } catch (IOException ignored) {
         } catch (UnsupportedProtocolException e) {

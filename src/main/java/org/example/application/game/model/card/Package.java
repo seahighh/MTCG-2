@@ -7,27 +7,34 @@ import java.util.List;
 @Builder
 public class Package {
 
-    private String id;
+    private int id;
+    private int price = 5;
+
+    public Package(int id, List<Card> Cards, int price) {
+        this.id = id;
+        this.Cards = Cards;
+        this.price = price;
+    }
 
     private List<Card> Cards;
 
-    private String name;
+    public int getPrice() {
+        return price;
+    }
 
 
     public Package() {
     }
 
-    public Package(String id, List<Card> Cards, String name) {
-        this.id = id;
-        this.Cards = Cards;
-        this.name = name;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     /**
      * 获取
      * @return id
      */
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -35,7 +42,7 @@ public class Package {
      * 设置
      * @param id
      */
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -55,24 +62,11 @@ public class Package {
         this.Cards = Cards;
     }
 
-    /**
-     * 获取
-     * @return name
-     */
-    public String getName() {
-        return name;
-    }
 
-    /**
-     * 设置
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String toString() {
-        return "Package{id = " + id + ", Cards = " + Cards + ", name = " + name + "}";
-    }
+
+
+
+
 }
 

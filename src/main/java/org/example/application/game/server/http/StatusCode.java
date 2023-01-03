@@ -4,6 +4,8 @@ public enum StatusCode {
     OK(200, "OK"),
     CREATED(201, "Created"),
     NOT_FOUND(404, "Not Found"),
+    UNAUTHORIYED(401, "Unauthorized"),
+    BADREQUEST(403, "Bad Request"),
     METHODE_NOT_ALLOWED(405, "Method Not Allowed"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error")
     ;

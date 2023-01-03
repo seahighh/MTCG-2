@@ -1,9 +1,15 @@
 package org.example.application.game.server.util;
 
+import org.example.application.game.model.user.User;
+import org.example.application.game.respository.UserMemoryRepository;
 import org.example.application.game.server.dto.Request;
 import org.example.application.game.server.exception.UnsupportedProtocolException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RequestBuilder {
+    static String authUser;
 
     /**
      * Takes an HTTP request as a string and builds and
@@ -54,4 +60,32 @@ public class RequestBuilder {
 
         return path;
     }
+
+    private static String authorizeRequest(String request, String header){
+        String authorizationHeader = findHeader(request, header);
+        if (authorizationHeader != null) {
+            String token = authorizationHeader.replace("Basic ", "");
+            String[] parts = token.split("-");
+            if (parts.length == 2) {
+                User user = UserMemoryRepository.getInstance().findByUsername(parts[0]);
+                if (user != null && token.equals(user.getToken())) {
+                    authUser = user.getUsername();
+                    return authUser;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static String findHeader(String request, String header) {
+        Pattern r = Pattern.compile("^" + header + ":\\s(.+)", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+        Matcher m = r.matcher(request);
+
+        if (!m.find()) {
+            return null;
+        }
+
+        return m.group(1);
+    }
+
 }

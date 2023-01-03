@@ -12,8 +12,9 @@ public interface CardRepository {
     List<Card> getCardsForUser(User user);
     List<Card> getCardsForPackage(Package packages);
     Card findByCardId(String id);
+    Card findByUserAndCCardId(User user, String id);
     Card save(Card card);
-    Card delete(Card card);
     Card addCardToUser(Card card, User user);
-    Card addCardToPackage(Card card, Package packages);
+    Card addCardToPackage(Card card, int p_id);
+
 }
