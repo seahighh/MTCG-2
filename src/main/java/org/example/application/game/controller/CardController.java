@@ -40,6 +40,7 @@ public class CardController {
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
         String content = null;
+
         try {
             content = objectMapper.writeValueAsString(cardRepository.findAll());
         } catch (JsonProcessingException e) {
