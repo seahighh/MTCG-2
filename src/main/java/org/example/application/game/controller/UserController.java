@@ -14,6 +14,8 @@ import org.example.application.game.server.http.Method;
 import org.example.application.game.server.http.StatusCode;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserController {
 
@@ -67,6 +69,8 @@ public class UserController {
 
 
     private Response create(Request request) {
+
+        //从检测文件里获取参数封装到User里，这样就能创建了
         ObjectMapper objectMapper = new ObjectMapper();
 
         String json = request.getContent();
@@ -83,6 +87,13 @@ public class UserController {
             throw new RuntimeException(e);
         }
 
+//        if (userRepository.save(user)){
+//            ...
+//            ...;
+//        }else{
+//            ...
+//            ...
+//        }
         if (content_a.equals("null")){
             user = userRepository.save(
                     user.toBuilder()
@@ -93,18 +104,20 @@ public class UserController {
             response.setStatusCode(StatusCode.CREATED);
             response.setContentType(ContentType.APPLICATION_JSON);
             String content;
+            Map map = new HashMap();
+            map.put("Message: ", "User created successfull");
+            map.put("User_Info: ", user.getUsername());
             try {
-                content = objectMapper.writeValueAsString(user);
+                content = objectMapper.writeValueAsString(map);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
             response.setContent(content);
-
             return response;
         }
         else {
             Response response = new Response();
-            response.setStatusCode(StatusCode.CREATED);
+            response.setStatusCode(StatusCode.OK);
             response.setContentType(ContentType.APPLICATION_JSON);
             String content_b = "User already exist!";
             response.setContent(content_b);

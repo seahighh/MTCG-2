@@ -24,6 +24,7 @@ public class PackageController {
 
     public Response handle(Request request) {
         if (request.getMethod().equals(Method.POST.method)) {
+            //admin can creat package, every package have 5 cards.
             if (request.getAuthUser() == null || !"admin".equalsIgnoreCase(request.getAuthUser())) {
                 Response response = new Response();
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
@@ -50,10 +51,10 @@ public class PackageController {
 
         Card[] cards = gson.fromJson(request.getContent(),Card[].class);
 
+        //loop for save 5 cards get from bat test files
         for(Card card:cards){
             card = cardRepository.save(card);
             cardRepository.addCardToPackage(card,cardPackage.getId());
-            System.out.println(card);
         }
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);

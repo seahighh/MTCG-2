@@ -12,6 +12,9 @@ import org.example.application.game.server.http.ContentType;
 import org.example.application.game.server.http.Method;
 import org.example.application.game.server.http.StatusCode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SessionController {
     private final UserRepository userRepository;
     private Gson g;
@@ -47,24 +50,27 @@ public class SessionController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        String content;
         try {
+            String content;
             content = objectMapper.writeValueAsString(userRepository.login(user.getUsername(), user.getPassword()));
-
+            if (content.equals("null")){
+                content = "Login fail";
+                response.setContent(content);
+            }else {
+                User user2 = userRepository.login(user.getUsername(), user.getPassword());
+                String Authorization_Name = user2.getUsername();
+                Map map = new HashMap();
+                map.put("Message: ", "Login successful");
+                map.put("Authorization_User: ", Authorization_Name);
+                content = objectMapper.writeValueAsString(map);
+                response.setContent(content);
+            }
+            return response;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        if (content.equals("null")){
-            content = "Login fail";
-            response.setContent(content);
-        }else {
-            response.setContent(content);
-        }
 
-        return response;
     }
 }
