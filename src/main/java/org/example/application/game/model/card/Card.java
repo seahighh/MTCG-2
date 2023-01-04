@@ -1,18 +1,19 @@
 package org.example.application.game.model.card;
 
 public class Card{
-    private String id;
-    private String name;
-    private float damage;
+    private String Id;
+    private String Name;
+    private float Damage;
     private String elementType;
     private String cardType;
 
     private boolean isLocked;
+    public Card(){}
 
     public Card(String id, String name, float damage, String elementType){
-        this.id = id;
-        this.name = name;
-        this.damage = damage;
+        this.Id = id;
+        this.Name = name;
+        this.Damage = damage;
         this.elementType = elementType;
     }
 
@@ -49,34 +50,34 @@ public class Card{
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
 
     public void setId(String id) {
-        this.id = id;
+        this.Id = id;
     }
 
 
     public String getName() {
-        return name;
+        return Name;
     }
 
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public void setLocked(boolean locked) {
         isLocked = locked;
     }
 
-    public void setDamage(float damage) {
-        this.damage = damage;
+    public float getDamage() {
+        return Damage;
     }
 
-    public float getDamage() {
-        return damage;
+    public void setDamage(float damage) {
+        this.Damage = damage;
     }
 
     public String getElementType() {
@@ -88,7 +89,7 @@ public class Card{
             this.elementType = ElementType.WATER.message;
         } else if (name.contains("Fire")) {
             this.elementType = ElementType.FIRE.message;
-        } else if (name.contains("Normal")) {
+        } else {
             this.elementType = ElementType.NORMAL.message;
         }
     }
@@ -98,10 +99,10 @@ public class Card{
     }
 
     public void setCardType(String name) {
-        if (name.contains("Monster")) {
-            this.cardType = CardType.MONSTER.message;
-        }else {
+        if (name.contains("Spell")) {
             this.cardType = CardType.SPELL.message;
+        }else {
+            this.cardType = CardType.MONSTER.message;
         }
     }
 }

@@ -11,9 +11,20 @@ import java.util.List;
 
 
 public class PackageMemoryRepository implements PackageRepository{
+    private static PackageMemoryRepository instance;
 
     private UserMemoryRepository userMemoryRepository;
     private CardMemoryRepository cardMemoryRepository;
+    public PackageMemoryRepository() {
+        userMemoryRepository = UserMemoryRepository.getInstance();
+        cardMemoryRepository = CardMemoryRepository.getInstance();
+    }
+    public static PackageMemoryRepository getInstance() {
+        if (PackageMemoryRepository.instance == null) {
+            PackageMemoryRepository.instance = new PackageMemoryRepository();
+        }
+        return PackageMemoryRepository.instance;
+    }
     public Package getPackage(int id){
         Connection conn = Database.getInstance().getConnection();
         try {
@@ -94,15 +105,25 @@ public class PackageMemoryRepository implements PackageRepository{
     public Package addPackage() {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES (?);");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES(?);", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 5);
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return this.getPackage(generatedKeys.getInt(1));
+                }
+            }
 
             ps.execute();
             conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
 
         return null;
     }

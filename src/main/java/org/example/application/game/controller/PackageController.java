@@ -29,6 +29,7 @@ public class PackageController {
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
                 response.setContentType(ContentType.TEXT_PLAIN);
                 response.setContent(StatusCode.UNAUTHORIYED.message);
+                System.out.println(request.getAuthUser());
                 return response;
             }
             return create(request);
@@ -43,21 +44,23 @@ public class PackageController {
 
     }
 
-        public Response create(Request request){
+    private Response create(Request request) {
         Gson gson = new Gson();
         Package cardPackage = packageRepository.addPackage();
-        Card[] cards = gson.fromJson(request.getContent(), Card[].class);
-        for (Card card:cards){
+
+        Card[] cards = gson.fromJson(request.getContent(),Card[].class);
+
+        for(Card card:cards){
             card = cardRepository.save(card);
-            card = cardRepository.addCardToPackage(card, cardPackage.getId());
+            cardRepository.addCardToPackage(card,cardPackage.getId());
+            System.out.println(card);
         }
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent("package create success!");
+        response.setContent("package create");
         return response;
-
-        }
+    }
 
 
 }

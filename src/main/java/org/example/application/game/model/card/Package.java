@@ -10,10 +10,10 @@ public class Package {
     private int id;
     private int price = 5;
 
-    public Package(int id, List<Card> Cards, int price) {
+    public Package(int id, int price, List<Card> cards) {
         this.id = id;
-        this.Cards = Cards;
         this.price = price;
+        Cards = cards;
     }
 
     private List<Card> Cards;

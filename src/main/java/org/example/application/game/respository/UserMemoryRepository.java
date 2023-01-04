@@ -88,15 +88,26 @@ public class UserMemoryRepository implements UserRepository {
     public User findByUsername(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps =conn.prepareStatement("SELECT username, password FROM users WHERE username = ?;");
+            PreparedStatement ps =conn.prepareStatement("SELECT * FROM users WHERE username = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                User user = User.builder()
-                        .username(rs.getString(1))
-                        .password(rs.getString(2))
-                        .build();
+//                User user = User.builder()
+//                        .username(rs.getString(1))
+//                        .password(rs.getString(2))
+//                        .build();
+
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setStatus(rs.getString("status"));
+                user.setPassword(rs.getString("password"));
+                user.setToken(rs.getString("token"));
+                user.setCoins(rs.getInt("coins"));
+                user.setCall_Name(rs.getString("call_name"));
+                user.setBio(rs.getString("bio"));
+                user.setImage(rs.getString("image"));
                 rs.close();
                 ps.close();
                 conn.close();

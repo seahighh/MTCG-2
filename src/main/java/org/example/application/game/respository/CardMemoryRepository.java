@@ -10,12 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CardMemoryRepository implements CardRepository {
+    private static CardMemoryRepository instance;
 
     private  List<Card> Cards;
 
 
     public CardMemoryRepository() {
         this.Cards = new ArrayList<>();
+    }
+
+    public static CardMemoryRepository getInstance() {
+        if (CardMemoryRepository.instance == null) {
+            CardMemoryRepository.instance = new CardMemoryRepository();
+        }
+        return CardMemoryRepository.instance;
     }
 
     public List<Card> findAll(){
@@ -57,14 +65,13 @@ public class CardMemoryRepository implements CardRepository {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                Card card = Card.info(
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getFloat(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBoolean(6)
-                );
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getInt("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setElementType(rs.getString("element_type"));
+                card.setLocked(rs.getBoolean("is_locked"));
                 rs.close();
                 ps.close();
                 conn.close();
@@ -196,21 +203,27 @@ public class CardMemoryRepository implements CardRepository {
 
     }
 
-    public Card addCardToPackage(Card card, int pid){
-        Connection conn = Database.getInstance().getConnection();
+    @Override
+    public Card addCardToPackage(Card card, int pid) {
         try {
+            Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("UPDATE cards SET package_id = ? WHERE id = ?;");
             ps.setInt(1, pid);
             ps.setString(2, card.getId());
 
+            int affectedRows = ps.executeUpdate();
+
             ps.close();
             conn.close();
 
+            if (affectedRows == 0) {
+                return null;
+            }
             return this.findByCardId(card.getId());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-
+        return null;
     }
 
     public Card addCardToUser(Card card, User user){
