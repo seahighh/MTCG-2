@@ -59,7 +59,7 @@ public class PackageController {
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent("package create");
+        response.setContent("package create successful");
         return response;
     }
 

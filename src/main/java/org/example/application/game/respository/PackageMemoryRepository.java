@@ -105,8 +105,9 @@ public class PackageMemoryRepository implements PackageRepository{
     public Package addPackage() {
         Connection conn = Database.getInstance().getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES(?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price, legal) VALUES(?, ?);", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 5);
+            ps.setInt(2, 1);
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {

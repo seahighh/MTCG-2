@@ -41,6 +41,10 @@ public class MTCGgame implements Application {
             return packageController.handle(request);
         }
 
+        if (request.getPath().startsWith("/transactions")){
+            return packageController.handle(request);
+        }
+
         //其实下面的代码是不会执行的，直接return对应的handle里去处理了
         Response response = new Response();
         response.setStatusCode(StatusCode.NOT_FOUND);

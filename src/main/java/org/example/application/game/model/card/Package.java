@@ -9,11 +9,13 @@ public class Package {
 
     private int id;
     private int price = 5;
+    private int legal = 1;
 
-    public Package(int id, int price, List<Card> cards) {
+    public Package(int id, int price, int legal, List<Card> cards) {
         this.id = id;
         this.price = price;
         Cards = cards;
+        this.legal = legal;
     }
 
     private List<Card> Cards;
@@ -62,11 +64,12 @@ public class Package {
         this.Cards = Cards;
     }
 
+    public int getLegal() {
+        return legal;
+    }
 
-
-
-
-
-
+    public void setLegal(int legal) {
+        this.legal = legal;
+    }
 }
 
