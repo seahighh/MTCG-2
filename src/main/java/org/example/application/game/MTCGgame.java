@@ -1,9 +1,6 @@
 package org.example.application.game;
 
-import org.example.application.game.controller.CardController;
-import org.example.application.game.controller.PackageController;
-import org.example.application.game.controller.SessionController;
-import org.example.application.game.controller.UserController;
+import org.example.application.game.controller.*;
 import org.example.application.game.respository.*;
 import org.example.application.game.server.Application;
 import org.example.application.game.server.dto.Request;
@@ -17,15 +14,19 @@ public class MTCGgame implements Application {
     private CardController cardController;
     private SessionController sessionController;
     private PackageController packageController;
+    private DeckController deckController;
 
     public MTCGgame() {
         UserRepository userRepository = new UserMemoryRepository();
         CardRepository cardRepository = new CardMemoryRepository();
         PackageRepository packageRepository = new PackageMemoryRepository();
+        DeckMemoryRepository deckMemoryRepository = new DeckMemoryRepository();
         this.userController = new UserController(userRepository);
         this.cardController = new CardController(cardRepository, userRepository);
         this.sessionController = new SessionController(userRepository);
         this.packageController = new PackageController(packageRepository, cardRepository);
+        this.deckController = new DeckController(cardRepository, userRepository, deckMemoryRepository);
+
     }
 
     @Override
@@ -48,7 +49,7 @@ public class MTCGgame implements Application {
             return cardController.handle(request);
         }
         if (request.getPath().startsWith("/deck")){
-            return cardController.handle(request);
+            return deckController.handle(request);
         }
 
         //其实下面的代码是不会执行的，直接return对应的handle里去处理了
