@@ -1,10 +1,7 @@
 package org.example.application.game.model.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.common.hash.Hashing;
 import lombok.Builder;
-
-import java.nio.charset.StandardCharsets;
 
 
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
@@ -132,11 +129,5 @@ public class User {
         this.coins = coins;
     }
 
-    public boolean authorize(String password) {
-        String passwordHash = Hashing.sha256()
-                .hashString(password, StandardCharsets.UTF_8)
-                .toString();
-        return password.equals(getPassword());
-    }
 
 }

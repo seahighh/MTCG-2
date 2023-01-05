@@ -3,6 +3,7 @@ package org.example.application.game.controller;
 import com.google.gson.Gson;
 import org.example.application.game.model.card.Card;
 import org.example.application.game.model.card.Package;
+import org.example.application.game.model.user.User;
 import org.example.application.game.respository.CardRepository;
 import org.example.application.game.respository.PackageRepository;
 import org.example.application.game.server.dto.Request;
@@ -42,6 +43,27 @@ public class PackageController {
         response.setContent(StatusCode.METHODE_NOT_ALLOWED.message);
 
         return response;
+
+    }
+
+    public Response handleAcquirePackages(Request request){
+
+        User user = new User();
+        user.setUsername(request.getAuthUser());
+        Package cardpackage = packageRepository.getRandomPackage();
+        if (cardpackage != null && packageRepository.addPackageToUser(cardpackage, user)){
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            response.setContent("cards acquired successful");
+            return response;
+        }
+        Response response = new Response();
+        response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
+        response.setContentType(ContentType.TEXT_PLAIN);
+        response.setContent(StatusCode.METHODE_NOT_ALLOWED.message);
+        return response;
+
 
     }
 

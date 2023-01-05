@@ -147,10 +147,16 @@ public class UserMemoryRepository implements UserRepository {
             ps.setInt(1, user.getCoins());
             ps.setString(2, user.getUsername());
 
+            int affectedRows = ps.executeUpdate();
             ps.close();
             conn.close();
+            if (affectedRows == 0) {
+                return null;
+            }
 
-            return this.findByUsername(user.getUsername());
+
+//            return this.findByUsername(user.getUsername());
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

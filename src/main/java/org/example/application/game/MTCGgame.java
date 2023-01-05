@@ -41,8 +41,14 @@ public class MTCGgame implements Application {
             return packageController.handle(request);
         }
 
-        if (request.getPath().startsWith("/transactions")){
-            return packageController.handle(request);
+        if (request.getPath().startsWith("/transactions/packages")){
+            return packageController.handleAcquirePackages(request);
+        }
+        if (request.getPath().startsWith("/cards")){
+            return cardController.handle(request);
+        }
+        if (request.getPath().startsWith("/deck")){
+            return cardController.handle(request);
         }
 
         //其实下面的代码是不会执行的，直接return对应的handle里去处理了

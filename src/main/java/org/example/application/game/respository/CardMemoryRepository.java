@@ -146,20 +146,19 @@ public class CardMemoryRepository implements CardRepository {
         Connection conn = Database.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ?;");
-            ps.setString(1, user.getUsername());
+            ps.setInt(1, user.getId());
             ResultSet rs = ps.executeQuery();
 
             List<Card> cards = new ArrayList<>();
             while (rs.next()){
-                cards.add(Card.info(
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getFloat(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBoolean(6)
-
-                ));
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getInt("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setElementType(rs.getString("element_type"));
+                card.setLocked(rs.getBoolean("is_locked"));
+                cards.add(card);
             }
 
             rs.close();
@@ -182,15 +181,14 @@ public class CardMemoryRepository implements CardRepository {
 
             List<Card> cards = new ArrayList<>();
             while (rs.next()){
-                cards.add(Card.info(
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getFloat(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBoolean(6)
-
-                ));
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getInt("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setElementType(rs.getString("element_type"));
+                card.setLocked(rs.getBoolean("is_locked"));
+                cards.add(card);
             }
 
             rs.close();
@@ -233,8 +231,12 @@ public class CardMemoryRepository implements CardRepository {
             ps.setInt(1, user.getId());
             ps.setString(2, card.getId());
 
+            int affectedRows = ps.executeUpdate();
             ps.close();
             conn.close();
+            if (affectedRows == 0) {
+                return null;
+            }
             return this.findByCardId(card.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);

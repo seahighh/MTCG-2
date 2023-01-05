@@ -132,10 +132,16 @@ public class PackageMemoryRepository implements PackageRepository{
     @Override
     public boolean addPackageToUser(Package packages, User user) {
         user = userMemoryRepository.findByUsername(user.getUsername());
+        // Not enough coins
         if (user.getCoins() < 5){
             return false;
         }
+
+        // Update coin balance
+
         user.setCoins(user.getCoins() - packages.getPrice());
+
+        // Save user
 
         userMemoryRepository.updateCoin(user);
 
@@ -154,8 +160,12 @@ public class PackageMemoryRepository implements PackageRepository{
             ps = conn.prepareStatement("DELETE FROM packages WHERE id = ?");
             ps.setInt(1, id);
 
+            int affectedRows = ps.executeUpdate();
             ps.close();
             conn.close();
+            if (affectedRows == 0) {
+                return false;
+            }
             return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
