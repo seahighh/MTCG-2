@@ -105,7 +105,7 @@ public class UserMemoryRepository implements UserRepository {
                 user.setPassword(rs.getString("password"));
                 user.setToken(rs.getString("token"));
                 user.setCoins(rs.getInt("coins"));
-                user.setCall_Name(rs.getString("call_name"));
+                user.setName(rs.getString("call_name"));
                 user.setBio(rs.getString("bio"));
                 user.setImage(rs.getString("image"));
                 rs.close();
@@ -212,6 +212,31 @@ public class UserMemoryRepository implements UserRepository {
 ////
 ////
 ////    }
+
+
+    public User updateUser(User user) {
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE users set call_name = ?, image = ?, bio = ? WHERE username = ?;");
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getImage());
+            ps.setString(3, user.getBio());
+            ps.setString(4, user.getUsername());
+
+            int affectedRows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            if (affectedRows == 0) {
+                return null;
+            }
+
+
+//          return this.findByUsername(user.getUsername());
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public User delete(User user) {

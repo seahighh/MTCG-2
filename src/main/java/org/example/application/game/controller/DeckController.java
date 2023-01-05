@@ -39,7 +39,7 @@ public class DeckController {
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
                 response.setContentType(ContentType.TEXT_PLAIN);
                 response.setContent(StatusCode.UNAUTHORIYED.message);
-                System.out.println(request.getAuthUser());
+
                 return response;
             }
             return readAll(request);
@@ -51,7 +51,7 @@ public class DeckController {
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
                 response.setContentType(ContentType.TEXT_PLAIN);
                 response.setContent(StatusCode.UNAUTHORIYED.message);
-                System.out.println(request.getAuthUser());
+
                 return response;
             }
             return create(request);
@@ -71,7 +71,7 @@ public class DeckController {
 
         User user = userRepository.findByUsername(request.getAuthUser());
         String[] ids = g.fromJson(request.getContent(), String[].class);
-        if (ids.length < 4){
+        if (ids.length < 4 || cardRepository.findByUserAndCCardId(user, ids[0]) == null){
             response.setStatusCode(StatusCode.OK);
             response.setContentType(ContentType.APPLICATION_JSON);
             response.setContent("error");

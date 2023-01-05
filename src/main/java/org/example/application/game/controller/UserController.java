@@ -33,8 +33,53 @@ public class UserController {
             return create(request);
         }
 
-        if (request.getMethod().equals(Method.GET.method)) {
-            return readAll();
+        else if (request.getMethod().equals(Method.GET.method)) {
+
+            if (request.getAuthUser() == null) {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.UNAUTHORIYED);
+                response.setContentType(ContentType.TEXT_PLAIN);
+                response.setContent(StatusCode.UNAUTHORIYED.message);
+
+                return response;
+            }
+
+            if (request.getPath().endsWith(request.getAuthUser())){
+                return readAll(request);
+            }
+
+            else {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.UNAUTHORIYED);
+                response.setContentType(ContentType.TEXT_PLAIN);
+                response.setContent("wrong user");
+
+                return response;
+            }
+
+        }
+        else if (request.getMethod().equals(Method.PUT.method)){
+            if (request.getAuthUser() == null) {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.UNAUTHORIYED);
+                response.setContentType(ContentType.TEXT_PLAIN);
+                response.setContent(StatusCode.UNAUTHORIYED.message);
+
+                return response;
+            }
+            if (request.getPath().endsWith(request.getAuthUser())){
+                return edit(request);
+            }
+
+            else {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.UNAUTHORIYED);
+                response.setContentType(ContentType.TEXT_PLAIN);
+                response.setContent("wrong user");
+
+                return response;
+            }
+
         }
 
         Response response = new Response();
@@ -45,25 +90,23 @@ public class UserController {
         return response;
     }
 
-    private Response readAll() {
-        //jackon and json, 序列化和反序列化, json data to our object content
+    private Response readAll(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
-        User user;
-        user = User.builder()
-                .password(null)
-                .token(null)
-                .build();
-        Response response = new Response();
-        response.setStatusCode(StatusCode.OK);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
+        String content;
+
+        //jackon and json, 序列化和反序列化, json data to our object content
+
+        User user = new User();
+        user = userRepository.findByUsername(request.getAuthUser());
         try {
-            content = objectMapper.writeValueAsString(user);
+            content = objectMapper.writeValueAsString(userRepository.findByUsername(request.getAuthUser()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        Response response = new Response();
+        response.setStatusCode(StatusCode.OK);
+        response.setContentType(ContentType.APPLICATION_JSON);
         response.setContent(content);
-
         return response;
     }
 
@@ -123,6 +166,25 @@ public class UserController {
             response.setContent(content_b);
             return response;
         }
+
+    }
+    private Response edit(Request request){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = request.getContent();
+        User user1 = new User();
+        try {
+            user1 = objectMapper.readValue(json, User.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        user1.setUsername(request.getAuthUser());
+        userRepository.updateUser(user1);
+        Response response = new Response();
+        response.setStatusCode(StatusCode.OK);
+        response.setContentType(ContentType.APPLICATION_JSON);
+        response.setContent("edit successful");
+        return response;
+
 
     }
 

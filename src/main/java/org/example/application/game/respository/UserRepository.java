@@ -17,4 +17,6 @@ public interface UserRepository {
 //    User updateUser(String name, User user);
 
     User delete(User user);
+
+    User updateUser(User user1);
 }

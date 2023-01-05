@@ -17,22 +17,22 @@ public class User {
 
     private String status;
     private int coins = 20;
-    private String Call_Name;
+    private String Name;
     private String Bio;
     private String Image;
     private int elo = 100;
     private int rank;
 
-    public User(int id, String username, String password, String token, String status, int coins, String call_Name, String bio, String image, int elo, int rank) {
+    public User(int id, String username, String password, String token, String status, int coins, String Name, String bio, String image, int elo, int rank) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.token = token;
         this.status = status;
         this.coins = coins;
-        Call_Name = call_Name;
-        Bio = bio;
-        Image = image;
+        this.Name = Name;
+        this.Bio = bio;
+        this.Image = image;
         this.elo = elo;
         this.rank = rank;
     }
@@ -45,12 +45,12 @@ public class User {
         this.id = id;
     }
 
-    public String getCall_Name() {
-        return Call_Name;
+    public String getName() {
+        return Name;
     }
 
-    public void setCall_Name(String call_Name) {
-        Call_Name = call_Name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getBio() {
