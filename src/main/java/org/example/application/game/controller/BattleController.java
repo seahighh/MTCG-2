@@ -57,7 +57,6 @@ public class BattleController {
     }
     private Response create(Request request){
         Response response = new Response();
-
         Battle battle = new Battle();
         User user = userRepository.findByUsername(request.getAuthUser());
         users.add(user);
