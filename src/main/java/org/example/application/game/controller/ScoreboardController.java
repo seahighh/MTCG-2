@@ -12,9 +12,7 @@ import org.example.application.game.server.http.ContentType;
 import org.example.application.game.server.http.Method;
 import org.example.application.game.server.http.StatusCode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ScoreboardController {
@@ -61,10 +59,10 @@ public class ScoreboardController {
 //        String[] stringArray = exampleList.toArray(new String[size]);
         String content;
         Map map = new HashMap();
-        List<Map> maps = new ArrayList<>();
-        maps = statsMemoryRepository.getScoreboard();
+
+        map = statsMemoryRepository.getScoreboard(user.getUsername());
         try {
-            content = objectMapper.writeValueAsString(maps);
+            content = objectMapper.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

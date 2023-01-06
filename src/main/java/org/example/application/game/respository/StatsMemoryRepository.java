@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class StatsMemoryRepository {
@@ -90,28 +88,26 @@ public class StatsMemoryRepository {
         return null;
     }
 
-    public boolean updateEloForPlayers(User playerA, User playerB, double pA, double pB) {
+    public boolean updateEloForPlayers(User playerA, User playerB, int pA, int pB) {
         int eloA = this.getStatsForUser(playerA).getElo();
         int eloB = this.getStatsForUser(playerB).getElo();
 
-        double eA = 1 / (1 + Math.pow(10, (eloB - eloA) / 400.0));
-        double eB = 1 - eA;
+        eloA += pA;
+        eloB += pB;
 
-        int rEloA = (int) Math.round(eloA + 10 * (pA - eA));
-        int rEloB = (int) Math.round(eloB + 10 * (pB - eB));
 
         try {
             Connection conn = Database.getInstance().getConnection();
 
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET elo = ? WHERE id = ?;");
-            ps.setInt(1, rEloA);
+            ps.setInt(1, eloA);
             ps.setInt(2, playerA.getId());
             if (ps.executeUpdate() <= 0) {
                 return false;
             }
 
             ps = conn.prepareStatement("UPDATE users SET elo = ? WHERE id = ?;");
-            ps.setInt(1, rEloB);
+            ps.setInt(1, eloB);
             ps.setInt(2, playerB.getId());
             if (ps.executeUpdate() <= 0) {
                 return false;
@@ -128,23 +124,23 @@ public class StatsMemoryRepository {
         return false;
     }
 
-    public List<Map> getScoreboard() {
+    public Map getScoreboard(String username) {
         try {
             Connection conn = Database.getInstance().getConnection();
 
-            PreparedStatement ps = conn.prepareStatement("SELECT username, elo, total_battles, won_battles, lost_battles FROM users ORDER BY elo DESC;");
+            PreparedStatement ps = conn.prepareStatement("SELECT username, elo, total_battles, won_battles, lost_battles, rank() OVER(ORDER BY elo)AS rank From users WHERE username = ?;");
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
-            Map map = new HashMap();
+            Map map = new LinkedHashMap();
 
-            List<Map> list = new ArrayList<>();
-            while (rs.next()) {
-                String string = new String();
+            if (rs.next()) {
                 map.put("username", rs.getString(1));
                 map.put("elo", rs.getInt(2));
                 map.put("total_battles", rs.getInt(3));
                 map.put("won_battles", rs.getInt(4));
                 map.put("lost_battles", rs.getInt(5));
-                list.add(map);
+                map.put("rank", rs.getInt(6));
+
             }
 
             ps.close();
@@ -152,7 +148,7 @@ public class StatsMemoryRepository {
             conn.close();
 
 
-            return list;
+            return map;
         } catch (SQLException e) {
             e.printStackTrace();
         }

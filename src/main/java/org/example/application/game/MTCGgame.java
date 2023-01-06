@@ -17,6 +17,7 @@ public class MTCGgame implements Application {
     private DeckController deckController;
     private StatsController statsController;
     private ScoreboardController scoreboardController;
+    private BattleController battleController;
 
     public MTCGgame() {
         UserRepository userRepository = new UserMemoryRepository();
@@ -24,6 +25,7 @@ public class MTCGgame implements Application {
         PackageRepository packageRepository = new PackageMemoryRepository();
         DeckMemoryRepository deckMemoryRepository = new DeckMemoryRepository();
         StatsMemoryRepository statsMemoryRepository = new StatsMemoryRepository();
+        BattleMemoryRepository battleMemoryRepository = new BattleMemoryRepository();
         this.userController = new UserController(userRepository);
         this.cardController = new CardController(cardRepository, userRepository);
         this.sessionController = new SessionController(userRepository);
@@ -31,6 +33,7 @@ public class MTCGgame implements Application {
         this.deckController = new DeckController(cardRepository, userRepository, deckMemoryRepository);
         this.statsController = new StatsController(userRepository, statsMemoryRepository);
         this.scoreboardController = new ScoreboardController(userRepository, statsMemoryRepository);
+        this.battleController = new BattleController(cardRepository, userRepository, deckMemoryRepository, battleMemoryRepository);
     }
 
     @Override
@@ -60,6 +63,9 @@ public class MTCGgame implements Application {
         }
         if (request.getPath().startsWith("/score")){
             return scoreboardController.handle(request);
+        }
+        if (request.getPath().startsWith("/battles")){
+            return battleController.handle(request);
         }
 
         //其实下面的代码是不会执行的，直接return对应的handle里去处理了

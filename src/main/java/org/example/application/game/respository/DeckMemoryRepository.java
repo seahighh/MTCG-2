@@ -21,7 +21,7 @@ public class DeckMemoryRepository {
         cardMemoryRepository = CardMemoryRepository.getInstance();
     }
 
-    public  DeckMemoryRepository getInstance() {
+    public static DeckMemoryRepository getInstance() {
         if (DeckMemoryRepository.instance == null) {
             DeckMemoryRepository.instance = new DeckMemoryRepository();
         }

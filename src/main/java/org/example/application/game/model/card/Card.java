@@ -105,4 +105,73 @@ public class Card{
             this.cardType = CardType.MONSTER.message;
         }
     }
+
+    public boolean winsAgainst(Card card) {
+
+        // wrap MonsterCard vs MonsterCard
+        if (CardType.MONSTER.equals(this.getCardType()) && CardType.MONSTER.equals(card.getCardType())) {
+
+            // Dragons defeat Goblins
+            if ("Dragon".equals(this.getName()) && "Goblin".equals(card.getName())) {
+                return true;
+            }
+
+            // Wizards defeat Orks
+            if ("Wizard".equals(this.getName()) && "Ork".equals(card.getName())) {
+                return true;
+            }
+
+            // FireElves defeat Dragons
+            if ("FireElve".equals(this.getName()) && "Dragon".equals(card.getName())) {
+                return true;
+            }
+        }
+
+        // wrap SpellCard vs MonsterCard
+        if (CardType.SPELL.equals(this.getCardType()) && CardType.MONSTER.equals(card.getCardType())) {
+
+            // WaterSpells defeat Knight
+            if (ElementType.WATER.equals(this.getElementType()) && "Knight".equals(card.getName())) {
+                return true;
+            }
+        }
+
+        // wrap MonsterCard vs SpellCard
+        if (CardType.MONSTER.equals(this.getCardType()) && CardType.SPELL.equals(card.getCardType())) {
+
+            // Kraken defeat all Spells
+            //noinspection RedundantIfStatement
+            if ("Kraken".equals(this.getName())) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public float calculateDamage(Card card) {
+        // Effectiveness only relevant for spell cards
+        if (CardType.SPELL.equals(this.getCardType())) {
+            // Effective (double damage)
+            if ((ElementType.WATER.equals(this.getElementType()) && ElementType.FIRE.equals(card.getElementType())) ||
+                    (ElementType.FIRE.equals(this.getElementType()) && ElementType.NORMAL.equals(card.getElementType())) ||
+                    (ElementType.NORMAL.equals(this.getElementType()) && ElementType.WATER.equals(card.getElementType()))) {
+                System.out.println(2 * this.getDamage());
+                return 2 * this.getDamage();
+            }
+
+            // Not Effective
+            if ((ElementType.FIRE.equals(this.getElementType()) && ElementType.WATER.equals(card.getElementType())) ||
+                    (ElementType.NORMAL.equals(this.getElementType()) && ElementType.FIRE.equals(card.getElementType())) ||
+                    (ElementType.WATER.equals(this.getElementType()) && ElementType.NORMAL.equals(card.getElementType()))) {
+                System.out.println(this.getDamage() / 2);
+                return this.getDamage() / 2;
+            }
+        }
+
+        // No Effect
+        System.out.println(this.getDamage());
+        return this.getDamage();
+    }
 }
