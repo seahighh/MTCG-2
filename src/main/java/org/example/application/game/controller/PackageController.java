@@ -59,9 +59,9 @@ public class PackageController {
             return response;
         }
         Response response = new Response();
-        response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
+        response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.TEXT_PLAIN);
-        response.setContent(StatusCode.METHODE_NOT_ALLOWED.message);
+        response.setContent(StatusCode.BADREQUEST.message);
         return response;
 
 
