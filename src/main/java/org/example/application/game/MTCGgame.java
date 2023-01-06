@@ -72,7 +72,7 @@ public class MTCGgame implements Application {
         Response response = new Response();
         response.setStatusCode(StatusCode.NOT_FOUND);
         response.setContentType(ContentType.TEXT_PLAIN);
-        response.setContent(StatusCode.NOT_FOUND.message);
+        response.setContent("Not finish yet ;/");
 
         return response;
     }

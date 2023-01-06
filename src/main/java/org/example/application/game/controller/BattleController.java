@@ -71,14 +71,14 @@ public class BattleController {
 
             response.setStatusCode(StatusCode.OK);
             response.setContentType(ContentType.APPLICATION_JSON);
-            response.setContent("Battle finished");
+            response.setContent("Two players battle finished");
             return response;
 
 
         }else {
             response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
             response.setContentType(ContentType.TEXT_PLAIN);
-            response.setContent("Now only havs one player");
+            response.setContent("Now only havs one player. ");
             return response;
         }
 

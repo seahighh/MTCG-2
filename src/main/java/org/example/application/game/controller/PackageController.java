@@ -31,7 +31,6 @@ public class PackageController {
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
                 response.setContentType(ContentType.TEXT_PLAIN);
                 response.setContent(StatusCode.UNAUTHORIYED.message);
-                System.out.println(request.getAuthUser());
                 return response;
             }
             return create(request);
