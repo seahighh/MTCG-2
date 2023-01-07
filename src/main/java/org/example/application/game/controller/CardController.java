@@ -1,12 +1,9 @@
 package org.example.application.game.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.example.application.game.model.card.Card;
 import org.example.application.game.model.user.User;
 import org.example.application.game.respository.CardRepository;
-import org.example.application.game.respository.UserMemoryRepository;
 import org.example.application.game.respository.UserRepository;
 import org.example.application.game.server.dto.Request;
 import org.example.application.game.server.dto.Response;
@@ -36,7 +33,6 @@ public class CardController {
                 response.setStatusCode(StatusCode.UNAUTHORIYED);
                 response.setContentType(ContentType.TEXT_PLAIN);
                 response.setContent(StatusCode.UNAUTHORIYED.message);
-                System.out.println(request.getAuthUser());
                 return response;
             }
             return readAll(request);
