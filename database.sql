@@ -1,13 +1,3 @@
-create table public.messages
-(
-    id      serial
-        primary key,
-    message varchar(255)
-);
-
-alter table public.messages
-    owner to swe1user;
-
 create table public.users
 (
     id            serial
