@@ -244,5 +244,31 @@ public class CardMemoryRepository implements CardRepository {
         }
     }
 
+    @Override
+    public boolean delete(String name) {
+        Connection conn = Database.getInstance().getConnection();
+        try {
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM cards WHERE id = ?");
+            ps.setString(1, name);
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return false;
+            }
+
+            ps.close();
+            conn.close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

@@ -17,4 +17,5 @@ public interface CardRepository {
     Card addCardToUser(Card card, User user);
     Card addCardToPackage(Card card, int p_id);
 
+    boolean delete(String username);
 }

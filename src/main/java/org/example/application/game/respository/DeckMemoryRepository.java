@@ -104,7 +104,7 @@ public class DeckMemoryRepository {
                 int count = rs.getInt(1);
 
                 // A deck consists of a maximum of 5 cards.
-                if (count >= 4) {
+                if (count > 4) {
                     return false;
                 }
 

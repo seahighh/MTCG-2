@@ -56,6 +56,7 @@ public class PackageMemoryRepository implements PackageRepository{
             Statement sm = conn.createStatement();
             ResultSet rs = sm.executeQuery("SELECT id, price FROM packages ORDER BY id;"); //one data only
 
+            //原本想拿随机的，但是实际内容是顺序给的，名字错了
             if (rs.next()){
                 Package packages = Package.builder()
                         .id(rs.getInt(1))
@@ -146,6 +147,7 @@ public class PackageMemoryRepository implements PackageRepository{
         userMemoryRepository.updateCoin(user);
 
         for (Card card : cardMemoryRepository.getCardsForPackage(packages)){
+            //one by one
             cardMemoryRepository.addCardToUser(card, user);
         }
         this.deletePackages(packages.getId());

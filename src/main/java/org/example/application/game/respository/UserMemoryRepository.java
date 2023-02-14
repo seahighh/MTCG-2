@@ -36,14 +36,14 @@ public class UserMemoryRepository implements UserRepository {
             ResultSet rs = ps.executeQuery();
             List<User> users = new ArrayList<>();
             while(rs.next()){
-                users.add(User.builder()
-                        .username(rs.getString(1))
-                        .password(rs.getString(2))
-                        .token(rs.getString(3))
-                        .status(rs.getString(4))
-                        .coins(rs.getInt(5))
-                        .build());
-
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setToken(rs.getString("token"));
+                user.setCoins(rs.getInt("coins"));
+                user.setStatus(rs.getString("status"));
+                users.add(user);
             }
             rs.close();
             ps.close();
@@ -189,6 +189,7 @@ public class UserMemoryRepository implements UserRepository {
         return null;
     }
 
+
 //    @Override
 ////    public User updateUser(String name, User user){
 ////        Connection conn = Database.getInstance().getConnection();
@@ -239,19 +240,28 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User delete(User user) {
+    public boolean delete(String username) {
         Connection conn = Database.getInstance().getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE username = ?");
-            ps.setString(1, user.getUsername());
+            ps.setString(1, username);
+
+            int affectedRows = ps.executeUpdate();
 
             ps.close();
             conn.close();
+
+            if (affectedRows == 0) {
+                return false;
+            }
+
+            ps.close();
+            conn.close();
+
+            return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-
-
-        return user;
+        return false;
     }
 }

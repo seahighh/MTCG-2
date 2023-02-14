@@ -71,6 +71,7 @@ public class DeckController {
 
         User user = userRepository.findByUsername(request.getAuthUser());
         String[] ids = g.fromJson(request.getContent(), String[].class);
+        //card belongs to user or not
         if (ids.length < 4 || cardRepository.findByUserAndCCardId(user, ids[0]) == null){
             response.setStatusCode(StatusCode.OK);
             response.setContentType(ContentType.APPLICATION_JSON);
