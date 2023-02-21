@@ -61,7 +61,7 @@ public class BattleController {
         User user = userRepository.findByUsername(request.getAuthUser());
         users.add(user);
         if (users.size() == 2){
-            battle = battleMemoryRepository.addBattle(battle);
+            battle = battleMemoryRepository.addBattle();
 
             for (User user1 : users){
                 battle = battleMemoryRepository.addUserToBattle(user1, battle);

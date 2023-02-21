@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class CardMemoryRepositoryTest {
 
@@ -66,6 +68,8 @@ class CardMemoryRepositoryTest {
             ResultSet rs = sm.executeQuery("SELECT * FROM cards WHERE id = '"+"id"+"';");
             Assertions.assertTrue(result);
             Assertions.assertFalse(rs.next());
+            sm.close();
+            conn.close();
         } catch (SQLException var5) {
             var5.printStackTrace();
         }
@@ -74,36 +78,28 @@ class CardMemoryRepositoryTest {
     void findByCardId() throws SQLException{
         Connection conn = Database.getInstance().getConnection();
         Statement sm = conn.createStatement();
+        sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES('id', 'test', 100, 'WATER', 'MONSTER');");
+        Card card;
+        card = cardMemoryRepository.findByCardId("id");
+        Assertions.assertEquals("test", card.getName());
+        Assertions.assertEquals("id", card.getId());
+        sm.close();
+        conn.close();
 
     }
 
     @Test
-    void findByUserAndCCardId() throws SQLException{
+    void findAll() throws SQLException{
         Connection conn = Database.getInstance().getConnection();
         Statement sm = conn.createStatement();
+        sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES('id', 'test', 100, 'WATER', 'MONSTER');");
+        List<Card> cards = new ArrayList<>();
+        cards = cardMemoryRepository.findAll();
+        Assertions.assertTrue(cards.size()>0);
+        sm.close();
+        conn.close();
+
+
     }
 
-    @Test
-    void getCardsForUser() throws SQLException{
-        Connection conn = Database.getInstance().getConnection();
-        Statement sm = conn.createStatement();
-    }
-
-    @Test
-    void getCardsForPackage() throws SQLException{
-        Connection conn = Database.getInstance().getConnection();
-        Statement sm = conn.createStatement();
-    }
-
-    @Test
-    void addCardToPackage() throws SQLException{
-        Connection conn = Database.getInstance().getConnection();
-        Statement sm = conn.createStatement();
-    }
-
-    @Test
-    void addCardToUser() throws SQLException{
-        Connection conn = Database.getInstance().getConnection();
-        Statement sm = conn.createStatement();
-    }
 }

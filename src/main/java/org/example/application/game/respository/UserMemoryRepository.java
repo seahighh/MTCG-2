@@ -93,10 +93,6 @@ public class UserMemoryRepository implements UserRepository {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-//                User user = User.builder()
-//                        .username(rs.getString(1))
-//                        .password(rs.getString(2))
-//                        .build();
 
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -231,8 +227,7 @@ public class UserMemoryRepository implements UserRepository {
                 return null;
             }
 
-
-//          return this.findByUsername(user.getUsername());
+          //  return this.findByUsername(user.getUsername());
             return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);

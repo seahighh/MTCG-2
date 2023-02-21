@@ -94,7 +94,7 @@ public class BattleMemoryRepository {
         }
         return null;
     }
-    public Battle addBattle(Battle battle) {
+    public Battle addBattle() {
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO battles VALUES(DEFAULT);", Statement.RETURN_GENERATED_KEYS);

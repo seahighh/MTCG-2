@@ -42,6 +42,8 @@ class UserMemoryRepositoryTest {
         sm.executeUpdate("INSERT INTO users(id, username, password) VALUES(-1, 'user', 'password')");
         List<User> users = userMemoryRepository.findAll();
         Assertions.assertTrue(users.size()>0);
+        sm.close();
+        conn.close();
     }
 
     @Test
@@ -54,45 +56,55 @@ class UserMemoryRepositoryTest {
         Assertions.assertEquals("user", user.getUsername());
         Assertions.assertEquals(-1, user.getId());
         Assertions.assertEquals("password", user.getPassword());
+        sm.close();
+        conn.close();
     }
 
     @Test
     void updateUser() throws SQLException{
-        String username = "user";
-        String password = "password";
+        String username = "username";
+        String password = "passwords";
         String Name = "name";
         String bio = "bio";
         String image = "image";
         Connection conn = Database.getInstance().getConnection();
         Statement sm = conn.createStatement();
-        sm.executeUpdate("INSERT INTO users(id, username, password) VALUES(-1, '"+ username+" ', '" + password + "')");
+        sm.executeUpdate("INSERT INTO users(id, username, password) VALUES(-1,'" + username + "', '" + password + "');");
+
         User user = new User();
+        user.setUsername(username);
         user.setName(Name);
         user.setBio(bio);
         user.setImage(image);
         User user1;
         user1 = userMemoryRepository.updateUser(user);
-        Assertions.assertEquals("name", user.getName());
-        Assertions.assertEquals("bio", user.getBio());
-        Assertions.assertEquals("image", user.getImage());
+
+        Assertions.assertEquals("name", user1.getName());
+        Assertions.assertEquals("bio",user1.getBio());
+        Assertions.assertEquals("image",user1.getImage());
+        sm.close();
+        conn.close();
     }
 
     @Test
     void updateCoin() throws SQLException{
+        String username = "username";
+        String password = "passwords";
         int coins = 20;
-        String username = "user";
-        String password = "password";
         Connection conn = Database.getInstance().getConnection();
         Statement sm = conn.createStatement();
-        sm.executeUpdate("INSERT INTO users(id, username, password, coins) VALUES(-1, '"+ username+" ', '" + password + "', '"+ coins+ "')");
+        sm.executeUpdate("INSERT INTO users(id, username, password,coins) VALUES(-1,'" + username + "', '" + password + "','" + coins + "');");
 
         User user = new User();
-
-        coins = coins - 5;
+        user.setUsername(username);
+        coins = coins-5;
         user.setCoins(coins);
+
         User user1;
         user1 = userMemoryRepository.updateCoin(user);
-        Assertions.assertEquals(15, user.getCoins());
+        Assertions.assertEquals(15, user1.getCoins());
+        sm.close();
+        conn.close();
     }
 
     @Test
@@ -105,6 +117,8 @@ class UserMemoryRepositoryTest {
         Assertions.assertEquals("user", user.getUsername());
         Assertions.assertEquals(-1, user.getId());
         Assertions.assertEquals("password", user.getPassword());
+        sm.close();
+        conn.close();
     }
 
     @Test
@@ -112,10 +126,25 @@ class UserMemoryRepositoryTest {
         Connection conn = Database.getInstance().getConnection();
         Statement sm = conn.createStatement();
         sm.executeUpdate("INSERT INTO users(id, username, password) VALUES(-1, 'user', 'password')");
-        User user = new User();
         boolean result = userMemoryRepository.delete("user");
         ResultSet rs = sm.executeQuery("select * from users where id = -1");
         Assertions.assertTrue(result);
         Assertions.assertFalse(rs.next());
+        sm.close();
+        conn.close();
+    }
+
+    @Test
+    void addUser(){
+        String username = "username";
+        String password = "passwords";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        User user1;
+        user1 = userMemoryRepository.save(user);
+
+        Assertions.assertEquals("username", user1.getUsername());
+        Assertions.assertEquals("passwords",user1.getPassword());
     }
 }

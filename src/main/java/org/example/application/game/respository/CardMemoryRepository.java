@@ -37,13 +37,13 @@ public class CardMemoryRepository implements CardRepository {
             List<Card> cards = new ArrayList<>();
 
             while (rs.next()){
-                cards.add(Card.info(
-                        rs.getString(1),
-                        rs.getString(2),
-                        rs.getFloat(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getBoolean(6)));
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getInt("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setElementType(rs.getString("element_type"));
+                cards.add(card);
 
             }
             rs.close();
