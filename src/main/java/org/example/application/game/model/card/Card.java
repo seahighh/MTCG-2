@@ -109,35 +109,31 @@ public class Card{
     public boolean winsAgainst(Card card) {
 
         // wrap MonsterCard vs MonsterCard
-        if (CardType.MONSTER.equals(this.getCardType()) && CardType.MONSTER.equals(card.getCardType())) {
+        if (CardType.MONSTER.message.equals(this.getCardType()) && CardType.MONSTER.message.equals(card.getCardType())) {
 
             // Dragons defeat Goblins
-            if ("Dragon".equals(this.getName()) && "Goblin".equals(card.getName())) {
+            if(this.getName().contains("Dragon")&&card.getName().contains("Goblin")){
                 return true;
             }
-
-            // Wizards defeat Orks
-            if ("Wizard".equals(this.getName()) && "Ork".equals(card.getName())) {
+            if(this.getName().contains("Wizard")&&card.getName().contains("Ork")){
                 return true;
             }
-
-            // FireElves defeat Dragons
-            if ("FireElve".equals(this.getName()) && "Dragon".equals(card.getName())) {
+            if(this.getName().contains("FireElf")&&card.getName().contains("Dragon")){
                 return true;
             }
         }
 
         // wrap SpellCard vs MonsterCard
-        if (CardType.SPELL.equals(this.getCardType()) && CardType.MONSTER.equals(card.getCardType())) {
+        if (CardType.SPELL.message.equals(this.getCardType()) && CardType.MONSTER.message.equals(card.getCardType())) {
 
             // WaterSpells defeat Knight
-            if (ElementType.WATER.equals(this.getElementType()) && "Knight".equals(card.getName())) {
+            if (ElementType.WATER.message.equals(this.getElementType()) && card.getName().contains("Knight")) {
                 return true;
             }
         }
 
         // wrap MonsterCard vs SpellCard
-        if (CardType.MONSTER.equals(this.getCardType()) && CardType.SPELL.equals(card.getCardType())) {
+        if (CardType.MONSTER.message.equals(this.getCardType()) && CardType.SPELL.message.equals(card.getCardType())) {
 
             // Kraken defeat all Spells
             //noinspection RedundantIfStatement
@@ -152,21 +148,21 @@ public class Card{
 
     public float calculateDamage(Card card) {
         // Effectiveness only relevant for spell cards
-        if (CardType.SPELL.equals(this.getCardType())) {
+        if (CardType.SPELL.message.equals(this.getCardType())) {
             // Effective (double damage)
-            if ((ElementType.WATER.equals(this.getElementType()) && ElementType.FIRE.equals(card.getElementType())) ||
-                    (ElementType.FIRE.equals(this.getElementType()) && ElementType.NORMAL.equals(card.getElementType())) ||
-                    (ElementType.NORMAL.equals(this.getElementType()) && ElementType.WATER.equals(card.getElementType()))) {
+            if ((ElementType.WATER.message.equals(this.getElementType()) && ElementType.FIRE.message.equals(card.getElementType())) ||
+                    (ElementType.FIRE.message.equals(this.getElementType()) && ElementType.NORMAL.message.equals(card.getElementType())) ||
+                    (ElementType.NORMAL.message.equals(this.getElementType()) && ElementType.WATER.message.equals(card.getElementType()))) {
                 System.out.println(2 * this.getDamage());
-                return 2 * this.getDamage();
+                return (2 * this.getDamage());
             }
 
             // Not Effective
-            if ((ElementType.FIRE.equals(this.getElementType()) && ElementType.WATER.equals(card.getElementType())) ||
-                    (ElementType.NORMAL.equals(this.getElementType()) && ElementType.FIRE.equals(card.getElementType())) ||
-                    (ElementType.WATER.equals(this.getElementType()) && ElementType.NORMAL.equals(card.getElementType()))) {
+            if ((ElementType.FIRE.message.equals(this.getElementType()) && ElementType.WATER.message.equals(card.getElementType())) ||
+                    (ElementType.NORMAL.message.equals(this.getElementType()) && ElementType.FIRE.message.equals(card.getElementType())) ||
+                    (ElementType.WATER.message.equals(this.getElementType()) && ElementType.NORMAL.message.equals(card.getElementType()))) {
                 System.out.println(this.getDamage() / 2);
-                return this.getDamage() / 2;
+                return (this.getDamage() / 2);
             }
         }
 
